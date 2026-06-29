@@ -27,7 +27,7 @@ This paper draws on private emails as well as primary sources—mailing list arc
 In 2003, I was the system administrator for the Brain Imaging Center (BIC) at UC Berkeley, responsible for an fMRI analysis pipeline that was, in practice, an _ad hoc_ collection of MATLAB scripts, IDL routines, C/C++ Programs, AWK one-liners, and shell glue that almost nobody outside the lab fully understood.
 Published fMRI results from our lab and others were nearly impossible to verify: the typical methods section said something like "SPM2 was used," with no record of which parameters had been set, in which order, or by whom.
 There was no mechanism for a reader—or even a returning postdoc—to rerun an analysis from raw data, and by then I had already spent time thinking about provenance tracking for fMRI data as part of a collaboration with the fMRI Data Center at Dartmouth, funded through the Human Brain Project (NIH P20 MH72580-01).
-The tooling was a scientific integrity problem masquerading as a technical inconvenience.
+We had a scientific integrity problem, exacerbated by technical constraints.
 The academic incentive system made it worse: writing and maintaining analysis software did not appear in tenure files, open-source authorship diluted traditional credit models, and reproducibility was not a recognized research output.
 
 Matthew Brett, then a visiting researcher at BIC, had arrived at a similar set of concerns by a different route.
@@ -51,11 +51,11 @@ In 2001, Travis Oliphant, Eric Jones, and Pearu Peterson merged a collection of 
 By the time of the first SciPy workshop at Caltech in 2002, there was enough critical mass to draw over fifty participants from several fields including astronomy, bioinformatics, physics—mostly researchers who were not primarily programmers, and who wanted Python to do what they needed even though the platform was not yet ready to do it [@scipy02report; @vannini2002scipy02gbb].
 
 By 2004, SciPy as a scientific computing *environment*—distinct from SciPy as a collection of algorithms—had not yet succeeded [@harrington2004direction].
-More concerningly, entering scientific Python at this point meant confronting a real architectural problem.
-Numeric was the mature, widely used array library, and SciPy and many other early tools were written directly against its data structures [@oliphant2004status].
+More concerningly, entering scientific Python at this point meant dealing with some non-trivial architectural problems.
+Numeric was a mature, widely used array library, and SciPy and many other early tools were written on top of its data structures [@oliphant2004status].
 At the Space Telescope Science Institute (STScI), Perry Greenfield, Todd Miller, and Rick White had developed numarray as a more flexible and maintainable replacement, optimized for the very large astronomical images STScI processed.
-New projects were encouraged to build on numarray's new array object, while established libraries such as SciPy remained tied to Numeric, and it was genuinely unclear how—or even whether—those legacy codebases could migrate.
-The result was a split community: two incompatible array libraries, active development energy on both, and no agreed plan for unification [@oliphant2004comments].
+New projects were encouraged to build on numarray's new array object, while established libraries such as SciPy remained tied to Numeric, and it was genuinely unclear how—or even whether—those legacy codebases could be migrated.
+The result was a split community: two incompatible array libraries, active development of both, and no agreed plan for unification [@oliphant2004comments].
 
 :::{important} Lesson 1
 Scientific Python did not begin with a single, coordinated design; it began with a shared foundation and a set of independent domain projects that each built what they needed.
@@ -67,19 +67,20 @@ Fixing the platform—not just the array split—was the prerequisite for furthe
 
 By early 2005, the NIPY team was taking shape: Jonathan Taylor, a statistician at Stanford who had written BrainStat as a Python port of Keith Worsley's fMRI analysis tools, and JB Poline, an fMRI methodologist at INRIA in France who understood both the methods and the politics of the field.
 From a different direction, in the course of finding people already using Python for scientific computing, we had begun collaborating with John Hunter (the creator of Matplotlib) and Fernando Pérez (the creator of IPython and later the co-founder of Project Jupyter)—and by February 2005 we were in active correspondence with them about inviting Travis Oliphant and Perry Greenfield to Berkeley.
-Travis Oliphant's January 2005 Numeric3 design proposal [@oliphant2005updating] and February status update [@oliphant2005numeric3] had already sharpened the question we needed the meeting to answer: how and can we get Python to be a successful scientific computing environment.
+Travis Oliphant's January 2005 Numeric3 design proposal [@oliphant2005updating] and February status update [@oliphant2005numeric3] had identified the main question the meeting needed to answer: how to get Python to become a successful scientific computing environment.
 
 The March 2005 meeting at Berkeley ran for three full days.
-The first day was a full-day hands-on laboratory, "Scientific Python for Neuroscience Research," taught by Fernando and John and designed to make SciPy, IPython, matplotlib, and related tools immediately usable for working neuroimaging scientists.
-The next two days were split from the start into two parallel tracks: one, anchored by the neuroimagers and statisticians, worked on the structure and rationale of the NIH grant proposal; the other, Travis and Perry—including separate conversations with Guido van Rossum (the creator of Python) and Paul Dubois—discussing whether and how a unified array object could be built that preserved the strengths of both.
-Each evening the two groups reconvened: what the grant proposed to fund and what the unification would require were, it turned out, deeply entangled questions, and teaching on day one had already tested how much of the existing tooling was legible to scientists who were not primarily programmers.
+The first day was a hands-on laboratory, "Scientific Python for Neuroscience Research," taught by Fernando and John and designed to make SciPy, IPython, matplotlib, and related tools immediately usable for working neuroimaging scientists.
+The next two days were split into two parallel tracks: one, anchored by the neuroimagers and statisticians, worked on the structure and rationale of an upcoming NIH grant proposal; the other, Travis and Perry—including separate conversations with Guido van Rossum (the creator of Python) and Paul Dubois—discussing how a unified array object could be built that preserved the strengths of both Numeric and numarray.
+Each evening the two groups reconvened to discuss the day's work.
+What the grant proposed to fund and the array unification requirements were, it turned out, deeply entangled questions, and teaching on day one had already tested how usable the existing tooling was to scientists who were not primarily programmers.
 
-Within days of the meeting, two parallel written threads carried its decisions forward.
-Travis Oliphant's "Future directions for SciPy in light of meeting at Berkeley" [@oliphant2005berkeley] opened a public discussion that quickly resolved into a concrete plan [@oliphant2005future]: matplotlib would be adopted as the scipy plotting solution; SciPy would be subdivided into a minimal scipy_core—essentially a cleaned-up successor to Numeric—and a separate package (or series of packages) of algorithms; and Travis committed to spending the following five to six months making scipy_core capable of replacing both Numeric and numarray for most users.
-That commitment resolved, eighteen months later, in the release of NumPy 1.0 in October 2006 [@oliphant2006numpy1.0].
+Within days of the meeting, two parallel mailing list threads communicated its outcomes.
+Travis Oliphant's "Future directions for SciPy in light of meeting at Berkeley" [@oliphant2005berkeley] opened a public discussion that quickly resolved into a concrete plan [@oliphant2005future]: matplotlib would be adopted as the SciPy plotting solution; SciPy would be subdivided into a minimal scipy_core—essentially a cleaned-up successor to Numeric—and a separate package (or series of packages) of algorithms; and Travis committed to spending the following five to six months making scipy_core capable of replacing both Numeric and numarray for most users.
+That commitment culminated, eighteen months later, in the release of NumPy 1.0 in October 2006 [@oliphant2006numpy1.0].
 
-Perry Greenfield's notes from the separate meeting with Guido van Rossum [@perry2005guido] resolved the upstream question in the opposite direction: including an array package in Python core would, in Guido's assessment, sap energy from the unification work that actually needed to happen.
-What Guido was receptive to was more targeted: a new __index__ special method that would let any Python object serve as a sequence or mapping index—closing a gap that rank-0 arrays had exposed—and improvements to the buffer protocol so that extension packages could share allocated memory without depending on a particular array C API.
+Perry Greenfield's notes from the separate meeting with Guido van Rossum [@perry2005guido] resolved the relationship of the array refactor with upstream Python: including an array package in Python core would, in Guido's assessment, sap energy from the unification work that actually needed to happen.
+What Guido was receptive to was more targeted: a new `__index__` special method that would let any Python object (such as an array) serve as a sequence index; and improvements to the buffer protocol so that extension packages could share allocated memory without depending on a particular array C API.
 Those two design decisions became PEP 357 [@oliphant2005pep357] and PEP 3118 [@oliphant2007pep3118], both of which were implemented in CPython and remain part of the language today.
 
 :::{important} Lesson 2
@@ -90,7 +91,7 @@ The 2005 and 2007 meetings worked not because the right people were in the room 
 ## Fostering the Ecosystem
 
 For me, the 2005 meeting's most consequential outcome was personal: a deepening involvement with NumPy and SciPy that was not planned and that the NIPY work had not originally required.
-NumPy and SciPy development depended almost entirely on volunteer labor—the main external source of paid development time was Google Summer of Code, administered through the Python Software Foundation.
+NumPy and SciPy development depended almost entirely on volunteer labor—the main external source of paid development was Google Summer of Code, administered through the Python Software Foundation.
 In 2006, Albert Strasheim worked on integrating libsvm into SciPy using ctypes, mentored by Dave Kammeyer—an effort that left useful code in the sandbox without a clear long-term home [@scipyGSoCsvm].
 In the summer of 2007, I mentored David Cournapeau's GSoC project `pymachine` [@cournapeau2007pymachine], which began as an effort to consolidate and expand the scattered machine learning code in the scipy sandbox—expectation-maximization modeling, support vector machines, and related tools—into a single, coherent package, and to give that package a richer notion of data through standardized datasets and readers.
 As the work began, the scikits namespace was gaining traction as a home for exactly this kind of domain-specific package: specialized enough that it did not belong in SciPy proper, mature enough to deserve a stable address outside the sandbox.

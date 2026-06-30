@@ -127,21 +127,28 @@ The survival condition for orphaned scientific code is not technical quality alo
 2010 [@]
 
 
-Chairing the SciPy conference from 2008 through 2011 was the organizational parallel: as the meeting grew from a small workshop of a few dozen attendees into an international venue drawing hundreds, someone had to manage the program, establish review standards, and make sure the infrastructure existed for the following year.
+Parallel to the technical work underway, community organization and outreach was taking place.
+I chairing the SciPy conference from 2008 through 2011, and as that meeting grew from a small workshop of a few dozen attendees into an international event drawing hundreds, someone had to manage the program, establish review standards, and make sure the infrastructure existed for the following year.
 The pattern that emerged—voluntary stewardship of shared infrastructure by scientists who were primarily researchers—was not unique to me.
 
-The proceedings machinery built during those conference-chairing years was more than a publishing convenience: it was a reproducibility experiment in miniature.
+The proceedings machinery we built during those conference-chairing years not only provided a pragmatic workflow, but was also a novel experiment in publishing and iterative review.
+<!-- S: A h/t here would be nice ;) -->
 Papers were submitted as reStructuredText source in a public GitHub repository; review happened in the open, via pull requests attached to identifiable individuals; reviewers were acknowledged by name; and source code was required alongside each paper.
-The toolchain—built before any commercial infrastructure existed for the job, using Sphinx, LaTeX, and custom scripts—was an early instance of what would later be called "open peer review," and it instantiated in a specific workflow the principles I was articulating in parallel in a 2012 paper in *Frontiers in Computational Neuroscience*, "Learning from Open Source Software Projects to Improve Scientific Review" [@10.3389/fncom.2012.00018].
-That paper was not proposing a hypothetical; it was describing what the proceedings were already doing.
+The toolchain—built before any commercial infrastructure existed for the job, using Sphinx, LaTeX, and custom scripts—was an early instance of what would later be called "open peer review," and it resulted in a specific workflow, the principles of which I articulated in a 2012 paper in *Frontiers in Computational Neuroscience*, "Learning from Open Source Software Projects to Improve Scientific Review" [@10.3389/fncom.2012.00018].
 The pre-Curvenote tooling was clunky, slow, and required contributors to understand a build system—but it worked, and it made the conference a place where submitting a paper meant opening your analysis to the same kind of collaborative scrutiny that good open-source development demands.
+
+<!-- S: I don't remember the tools being slow, or particularly clunky; these tools were prescient, and we had a fairly elegant solution for the problem at the time. -->
+<!-- S: One point that should be emphasized better here is the iterative nature of the approach, and that our goal was to guide the papers towards acceptance. -->
+<!-- S: Gaël helped you with the first year or two, and then I took over and built that machinery, the procbuild preview bot etc. Other sections credit collaborators, but this one doesn't.-->
 
 NumFOCUS, incorporated in 2012, gave the community its first legal and financial home.
 The founding board—Travis Oliphant (chairman), Fernando Pérez (secretary), Perry Greenfield, John Hunter, Anthony Scopatz, and myself as president—was not assembled by design; it was assembled by trajectory, a roster of people whose connections could largely be traced back to the 2005 meeting and the follow-up sprints.
+<!-- S: Shouldn't Leah be mentioned? She ran as ED for a long time. -->
 But the formation of NumFOCUS also marked an honest acknowledgment of something that had become impossible to ignore: the community was doing substantial, consequential infrastructure work that none of its members' institutions were prepared to recognize or reward.
 Conference proceedings, release branches, documentation marathons, and Google Summer of Code mentoring appeared nowhere in tenure files; the people doing this work were doing it out of commitment to the science, not because the academic incentive system had made room for it.
 The distance between community capacity and institutional recognition had a precise technical analogue: a "toward SciPy 1.0" thread on the scipy-dev list dates from 2008, but SciPy 1.0 shipped in November 2017—a nine-year gap that reflects not a failure of effort but the reality that some infrastructure problems require a decade of patient, unglamorous work before they are ready to be declared done.
 Packaging, the problem Travis had identified in 2005 as the prerequisite for everything else, was not genuinely resolved until the widespread adoption of wheels in 2014.
+<!-- S: I think this is a controversial argument; arguably it was addressed to some extent by EPD and other distros, pragmatically thoroughly solved by Conda, and then solved at a Python community level by wheels—but also only after work Nathaniel, Matthew, etc. did -->
 Some problems cannot be sprint-solved.
 
 :::{important} Lesson 4
@@ -151,19 +158,27 @@ Volunteer stewardship without institutional mandate can build infrastructure tha
 
 ## Deliberately Repeating the Pattern
 
+<!-- S: there's a large gap in time here, in which Ralf did a bunch of heavy liftig; I think his name should at least appear as the person you handed over many of the SciPy project responsibilities to -->
+
 By 2020, the scientific Python ecosystem had succeeded in ways that the 2003 problem had not anticipated: NumPy, SciPy, matplotlib, scikit-learn, scikit-image, and a dozen other projects were each well-maintained, widely used, and internationally recognized.
 But their success had reproduced, at the ecosystem level, the same structural problem that the 2005 meeting had been called to solve at the project level.
 The ecosystem was "sustained by independent volunteers with separate mailing lists, websites, roadmaps, documentation, engineering and packaging solutions, and governance structures," producing "duplicated effort, disorganized documentation, breakage upon new releases, unintended performance regressions, and user confusion"—the grant's own words, describing not a failure but a coordination gap that individual project health could not close.
+
+<!-- S: This is a quote, but no reference to the planning grant. -->
+
 There was, as the 2020 planning grant noted, "no venue for developing a formal, shared vision of the future."
 The informal coordination layer that the 2005--2008 meeting rotation had provided—the quarterly sprint in which Travis Oliphant, Perry Greenfield, Fernando Pérez, and a dozen others sat together and made the decisions that the mailing lists then ratified—had dissolved as the participants moved to different institutions, took on different roles, and as the ecosystem grew too large for any single room to hold its core maintainers.
+<!-- S: I presume this rather became the SciPy and NumPy governing councils; but those had no concern for the overarching community. -->
 The problem Stéfan and I set out to address with the Scientific Python project was structurally identical to the problem the 2005 meeting had been called to address: a distributed network of people who needed to coordinate, and no institutional home in which to do it.
 
-The Scientific Python project, co-founded by Stéfan and me in 2020 with support from the Chan Zuckerberg Initiative and the Alfred P. Sloan Foundation, was not a reinvention of the 2005 pattern but a deliberate formalization of it.
+The Scientific Python project, founded in 2020 with support from the Chan Zuckerberg Initiative and the Alfred P. Sloan Foundation, was not a reinvention of the 2005 pattern but a deliberate formalization of it.
 SPECs—Scientific Python Ecosystem Coordination documents—are the formal version of the kind of cross-project decisions that had been made in the 2005--2008 scipy-dev and numpy-discussion threads: opt-in, explicitly multi-project, authored in the open on GitHub, and archived as part of the ecosystem's governance record rather than buried in list archives from 2007.
 A SPEC goes through the same process a good mailing list decision always required: proposal, discussion across projects, explicit adoption by each project that chooses to implement it, and a public record of who adopted what and when—but with tooling that makes the process legible to a contributor who was not present at the original conversation.
-The annual developer summit, first held in Seattle in May 2023, was modeled explicitly on the 2005--2008 meeting rotation: Stéfan and I spearheaded it precisely because "before the developer summits started in 2023, communication was often confined to specific projects" and people needed a space to come together across project boundaries.
+The annual developer summit, first held in Seattle in May 2023, was modeled explicitly on the 2005--2008 meeting rotation: we spearheaded it precisely because "before the developer summits started in 2023, communication was often confined to specific projects" and people needed a space to come together across project boundaries.
 The first summit brought together 34 developers from across the ecosystem for a week-long, in-person sprint on shared infrastructure—build systems, continuous integration, release tooling, sparse arrays—the same unglamorous prerequisite work that the 2005 meeting had identified as the necessary foundation for everything else.
 Cross-project governance infrastructure—shared contributor guidelines, coordinated release cycles, common packaging tooling—was the engineering parallel: the answer to the same problem that Travis had named in 2005, now addressed with a decade of additional experience and a community large enough to share the maintenance burden.
+
+<!-- S: This next paragraph feels a bit disjointed from the preceding text. -->
 
 The proof that the model had worked appeared in a form the 2003 problem had specified: in the fall of 2015, at Berkeley, a semester-long course (STAT 159/259, "Reproducible and Collaborative Statistical Data Science") centered on a group project in which students with no prior neuroimaging background chose a published fMRI paper with publicly available data, attempted to reproduce its results from raw data using Git, Python, NumPy, SciPy, NiBabel, and scikit-learn, and were graded in part on whether the instructors could reproduce the students' own results.
 Matthew Brett and JB Poline—both participants in the 2005 meeting—were on the teaching team.
@@ -172,10 +187,14 @@ The NIPY mission statement's claim that "good ideas come from understanding; und
 
 The institutional anchor that the 2005 pattern had lacked was provided, finally, by BIDS and Berkeley's OSPO.
 The Moore/Sloan grants of 2017, hosted through BIDS, were the first-ever dedicated funding for NumPy—not a side effect of a grant for something else, but a direct investment in the maintenance of shared infrastructure—and they gave the project something it had never had: paid time for Nathaniel Smith and others to work on the technical debt that fifteen years of volunteer stewardship had accumulated.
+<!-- S: technically, Nathaniel's time was fully covered by BIDS at the time, and the Moore funds allowed us to hire others who are still active in the ecosystem, namely Sebastian, Matti, and Tyler -->
 BIDS as an institutional anchor gave the ecosystem's key maintainers—Pérez, Ragan-Kelley, van der Walt, and myself—stable employment at a research university where open-source work was recognized as a research contribution, and it gave the Scientific Python project a home that was neither a company nor a foundation but a university institute, which meant it could credibly host cross-institutional work without any one project's commercial interests shaping the agenda.
+<!-- S: a bold an inaccurate claim, that we are the ecosystem's key maintainers :) Perhaps "some of the ecosystem's key maintainers" -->
 Berkeley OSPO, established in April 2024 within BIDS and part of a coordinated UC-system network of open source program offices, is the explicit institutional answer to the academic incentive tension that has threaded through every section of this paper.
-As executive director, I now hold a university role whose job description is open-source stewardship—the same work that conference proceedings, release branches, and documentation marathons represented in 2008, now recognized as a university function rather than a personal favor.
+<!-- S: The above sentence is too vague -->
+As executive director, I now hold a university role whose job description is "open-source stewardship"—the same work that conference proceedings, release branches, and documentation marathons represented in 2008, now recognized as a university function rather than a personal favor.
 The problem identified in 2003—tools that could not be maintained because institutions did not recognize maintenance as work—now has an institutional form.
+<!-- S: above sentence essentially repeats the one before it -->
 The original pattern is deliberately replicable; Scientific Python is the most explicit attempt yet to institutionalize it; and OSPO is the attempt to make the institution outlast any single grant cycle, to make open-source stewardship a function of the university rather than a favor of individuals within it.
 
 :::{important} Lesson 5

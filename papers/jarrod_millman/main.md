@@ -9,12 +9,11 @@ abstract: |
 
 # Introduction
 
-Open scientific software infrastructure often begins with a single actor---a researcher, a lab, a company---whose vision, energy, and effort make the first version possible.
-That focus is not necessarily a flaw; it is often the only way anything starts at all.
-What matters is what happens next.
+Open scientific software infrastructure often begins with a single actor---a researcher, a lab, a company---whose vision, energy, and effort make its creation possible.
+And, while that initial focused, isolated effort is required to start, it matters greatly what happens next.
 As the infrastructure grows, its survival depends on a shift: from single-actor ownership to community governance, and from informal community practice to institutional support.
 When that transition happens, the infrastructure becomes durable.
-When it does not, growth stalls and the burden of keeping it alive falls on a shrinking circle of people.
+When it does not, growth stalls and the burden of keeping it alive rests on a shrinking circle of people.
 
 This paper is personal.
 It is shaped by the collaborations I was part of and the problems that were in front of me at the time.
@@ -22,27 +21,31 @@ Many of the people involved in this work would tell the story differently, from 
 A message threaded through all of it is one the academic world still resists: open source scientific software is not a side effect of research; it is research infrastructure, and it needs to be anchored in the same institutions that support the science it enables.
 
 The argument this paper makes is specific about *how* that anchoring happens.
-Durable open scientific infrastructure is not built in one move; it is layered---technical foundation first, then community governance, then institutional support---and each layer must be deliberately rebuilt as the ecosystem grows into new scales and contexts.
+Durable open scientific infrastructure is not built in an day; it has layers to it: a technical foundation, followed by community governance, and then, ideally, institutional support.
+Each layer must be deliberately built, and re-built, as the ecosystem grows.
 The lessons drawn throughout the paper are evidence for that claim.
-Each one marks a moment when a layer that had worked at one scale stopped working at the next, and the community had to decide, consciously or not, whether to rebuild it.
+Each one marks a moment when a layer that had worked at one scale stopped working at the next, and the community had to decide, consciously or not, whether and how to rebuild it.
 
 # How to Start
 
 In 2003, I was the system administrator for the Brain Imaging Center at UC Berkeley, responsible for an neuroimaging analysis pipeline that was, in practice, an _ad hoc_ collection of MATLAB scripts, IDL routines, C/C++ programs, AWK one-liners, and shell glue that almost nobody outside the lab fully understood.
 Published results from our lab and others were nearly impossible to verify: the typical methods section said something like "SPM2 was used," with no record of which parameters had been set, in which order, or by whom.
 There was no mechanism to rerun an analysis from raw data.
-We had a scientific integrity problem, made worse by technical constraints.
-The academic incentive system amplified it: writing and maintaining analysis software did not appear in tenure files, open source authorship diluted traditional credit models, and computational reproducibility was not a recognized research output.
+Scientific integrity was a clear concern, and it was made worse by technical constraints.
+The academic incentive system amplified the problem: writing and maintaining analysis software did not appear in tenure files, open source authorship diluted traditional credit models, and computational reproducibility was not a recognized research output.
 
 My colleague, Matthew Brett, had arrived at a related set of concerns by a different route.
 His concern was less about reproducibility itself and more about the way neuroimaging software concentrated power: the dominant analysis tools were effectively single-owner open source, with one lab setting priorities and methods for the field.
 That made the politics of the software visible in a way I had not thought much about before.
-If you disagreed with those methods, your options were to fork that single-owner project or to invest in a community-owned alternative that could be governed by the wider neuroimaging community.
+If you disagreed with the way methods were implemented, your options were to fork a single-owner project or to invest in a community-owned alternative that could be governed by the wider neuroimaging community.
+
+<!-- Why are the choices here single-owner vs opaque? Should be reflected in sentence above? -->
 
 Rather than accepting either a single-owner tool or an opaque pipeline, we set out to build a community-owned neuroimaging platform in Python that would make analyses scriptable from raw data and invite contributors from beyond a single lab.
 The project took the name Neuroimaging in Python (NIPY) [@10.1109/MCSE.2007.46].
 NIPY did not become the single unified platform we had initially imagined---like SciPy itself, it eventually dispersed into a collection of focused, thriving projects: nibabel, nilearn, nipype, dipy, mne-python, and others [nipyorg].
-That is a different story, with a surprisingly similar overall arc.
+That is a different story, but with a surprisingly similar arc as this one.
+<!-- Maybe can give a hint of how that arc is similar? -->
 What matters here is what NIPY set in motion: it drew us into collaboration with the broader ecosystem, where we learned together, shared problems and solutions across domain boundaries, and built the relationships that the rest of this paper traces.
 
 ## Scientific Python Before NumPy
@@ -53,7 +56,9 @@ Early SciPy workshops at Caltech drew dozens of scientists from astronomy, bioin
 For domain scientists, Python already looked promising, but the underlying stack was fragmented enough that building on it felt risky.
 
 The fragmentation was architectural and social at the same time.
-Numeric underpinned SciPy and many existing tools, while numarray---developed at the Space Telescope Science Institute under Perry Greenfield's leadership---introduced a second, incompatible array implementation aimed at very large images; new projects were encouraged to use numarray, older ones could not easily migrate, and no agreed path to unification existed [@oliphant2004status; @oliphant2004comments].
+<!-- It is not entirely clear from the paragraph below why it was social? -->
+Numeric underpinned SciPy and many existing tools.
+On the other hand, numarray—developed at the Space Telescope Science Institute under Perry Greenfield's leadership—introduced a second, incompatible array implementation aimed at very large images; new projects were encouraged to use numarray, older ones could not easily migrate, and no agreed path to unification existed [@oliphant2004status; @oliphant2004comments].
 Meanwhile, the `numpy-discussion` list and the SciPy workshop acted as shared communication spaces across this divide, so the same people were debating Numeric vs. numarray in public even as their code bases remained split.
 
 ## The 2005 Meeting and the Future of SciPy
@@ -62,7 +67,7 @@ By early 2005, the NIPY team was taking shape: Jonathan Taylor, JB Poline, Ferna
 As we planned a NIPY meeting at Berkeley for March, we were watching the `numpy-discussion` threads that followed Travis's January Numeric3 design proposal [@oliphant2005updating] and February status update [@oliphant2005numeric3].
 In those posts, Travis described Numeric3 as a bridge between Numeric and numarray, based largely on the Numeric code base, and emphasized the need to keep Numeric's tight homogeneous-array implementation moving forward while still learning from numarray.
 The idea that Numeric and numarray should eventually merge was there, but only as an aspiration.
-By inviting Travis and Perry to join the Berkeley meeting and to speak with Guido van Rossum (the creator of Python) and Paul, we hoped to turn that aspiration into a shared plan for a unified array object and package.
+By inviting Travis and Perry (numarray) to join the Berkeley meeting and to speak with Guido van Rossum (the creator of Python) and Paul (Numeric), we hoped to turn that aspiration into a shared plan for a unified array object and package.
 
 The first day was a hands-on laboratory, "Scientific Python for Neuroscience Research," taught by Fernando and John and designed to make Numeric, SciPy, IPython, matplotlib, and related tools immediately usable for working neuroimaging scientists.
 The next two days were split into two parallel tracks: one, anchored by the neuroimagers and statisticians, focused on NIPY; the other, Travis and Perry---including separate conversations with Guido and Paul---worked through whether and how a unified array object could be built that preserved the strengths of both Numeric and numarray.
@@ -76,10 +81,11 @@ That commitment culminated, eighteen months later, in the release of NumPy 1.0 i
 
 ## Building the Foundation
 
-NumPy 1.0 was not the foundation; it was what made the foundation possible.
+NumPy 1.0 itself, while transformational in its unification of the ecosystem, was just the beginning of what needed to be built.
 A scientific computing platform, comparable to what MATLAB or IDL provided, required far more: a vast collection of mature, performant algorithms spanning optimization, signal processing, linear algebra, statistics, differential equations, and more; a plotting system; an interactive environment; and the documentation, testing, and packaging discipline that makes all of it installable, trustworthy, and teachable.
-What NumPy 1.0 did was unlock pent-up energy.
-It resolved the array fragmentation that had made building on the ecosystem feel risky, and it gave the community a single stable target to build on together.
+<!-- a better word than discipline? --^ -->
+But NumPy 1.0 managed to unlock a lot of pent-up energy.
+By resolving the array fragmentation that had made building on the ecosystem feel risky, it gave the community a single stable library to build on, together.
 
 <!--
 https://github.com/numpy/numpy/graphs/contributors?from=10%2F5%2F2006&to=3%2F13%2F2009
@@ -96,14 +102,14 @@ What started as a neuroimaging software problem did not stay one.
 Looking for a way to build community‑owned neuroimaging tools, rather than relying on single‑owner lab software, pulled me and my collaborators into the broader scientific Python effort, because the array foundation that any such shared platform would need was itself unresolved.
 Solving our problem meant first helping solve SciPy's.
 
-The Berkeley meeting is the hinge in that story.
+The Berkeley turned out to be pivotal in that story.
 What made it work was not the agenda but the room: a hands-on lab that got working scientists using the tools immediately, two parallel tracks that let the NIPY discussion and the array negotiation proceed side by side, and evenings when both groups came back together to compare notes.
 Travis and Perry were in the building, not posting to a list---and the difference showed in what the discussion produced.
 
 What it produced was a plan: a unified array object, a roadmap that ran through NumPy 1.0 and, two years later, the 2007 sprint's board.
 What it did not yet produce was an ecosystem.
-The people in that room---neuroimagers, astronomers, statisticians---were oriented around one shared technical problem: building a foundation solid enough to trust.
-None of us was yet thinking about how to build, or hold together, a distributed collection of projects across dozens of scientific domains.
+The people in that room---neuroimagers, astronomers, statisticians---were oriented around one shared technical problem: having a foundation solid enough to build on.
+None of us was yet thinking about how to develop, or hold together, a distributed collection of projects across dozens of scientific domains.
 
 :::{important} Shared problems need shared rooms.
 The array unification, the plotting decision, the board and its commitments---none of it came from consensus reached asynchronously.

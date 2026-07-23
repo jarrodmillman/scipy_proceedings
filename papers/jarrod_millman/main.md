@@ -9,12 +9,11 @@ abstract: |
 
 # Introduction
 
-Open scientific software infrastructure often begins with a single actor---a researcher, a lab, a company---whose vision, energy, and effort make the first version possible.
-That focus is not necessarily a flaw; it is often the only way anything starts at all.
-What matters is what happens next.
+Open scientific software infrastructure often begins with a single actor---a researcher, a lab, a company---whose vision, energy, and effort make its creation possible.
+And, while that initial focused, isolated effort is required to start, it matters greatly what happens next.
 As the infrastructure grows, its survival depends on a shift: from single-actor ownership to community governance, and from informal community practice to institutional support.
 When that transition happens, the infrastructure becomes durable.
-When it does not, growth stalls and the burden of keeping it alive falls on a shrinking circle of people.
+When it does not, growth stalls and the burden of keeping it alive rests on a shrinking circle of people.
 
 This paper is personal.
 It is shaped by the collaborations I was part of and the problems that were in front of me at the time.
@@ -22,27 +21,27 @@ Many of the people involved in this work would tell the story differently, from 
 A message threaded through all of it is one the academic world still resists: open source scientific software is not a side effect of research; it is research infrastructure, and it needs to be anchored in the same institutions that support the science it enables.
 
 The argument this paper makes is specific about *how* that anchoring happens.
-Durable open scientific infrastructure is not built in one move; it is layered---technical foundation first, then community governance, then institutional support---and each layer must be deliberately rebuilt as the ecosystem grows into new scales and contexts.
-The lessons drawn throughout the paper are evidence for that claim.
-Each one marks a moment when a layer that had worked at one scale stopped working at the next, and the community had to decide, consciously or not, whether to rebuild it.
+Durable open scientific infrastructure is not built in an day; it has layers to it: a technical foundation, followed by community governance, and then, ideally, institutional support.
+Each layer must be deliberately built, and re-built, as the ecosystem grows.
+Each one marks a moment when a layer that had worked at one scale stopped working at the next, and the community had to decide, consciously or not, whether and how to rebuild it.
 
 # How to Start
 
 In 2003, I was the system administrator for the Brain Imaging Center at UC Berkeley, responsible for an neuroimaging analysis pipeline that was, in practice, an _ad hoc_ collection of MATLAB scripts, IDL routines, C/C++ programs, AWK one-liners, and shell glue that almost nobody outside the lab fully understood.
 Published results from our lab and others were nearly impossible to verify: the typical methods section said something like "SPM2 was used," with no record of which parameters had been set, in which order, or by whom.
 There was no mechanism to rerun an analysis from raw data.
-We had a scientific integrity problem, made worse by technical constraints.
-The academic incentive system amplified it: writing and maintaining analysis software did not appear in tenure files, open source authorship diluted traditional credit models, and computational reproducibility was not a recognized research output.
+Scientific integrity was a clear concern, and it was made worse by technical constraints.
+The academic incentive system amplified the problem: writing and maintaining analysis software did not appear in tenure files, open source authorship diluted traditional credit models, and computational reproducibility was not a recognized research output.
 
 My colleague, Matthew Brett, had arrived at a related set of concerns by a different route.
 His concern was less about reproducibility itself and more about the way neuroimaging software concentrated power: the dominant analysis tools were effectively single-owner open source, with one lab setting priorities and methods for the field.
-That made the politics of the software visible in a way I had not thought much about before.
 If you disagreed with those methods, your options were to fork that single-owner project or to invest in a community-owned alternative that could be governed by the wider neuroimaging community.
+That made the politics of the software visible in a way I had not thought much about before.
 
 Rather than accepting either a single-owner tool or an opaque pipeline, we set out to build a community-owned neuroimaging platform in Python that would make analyses scriptable from raw data and invite contributors from beyond a single lab.
 The project took the name Neuroimaging in Python (NIPY) [@10.1109/MCSE.2007.46].
 NIPY did not become the single unified platform we had initially imagined---like SciPy itself, it eventually dispersed into a collection of focused, thriving projects: nibabel, nilearn, nipype, dipy, mne-python, and others [nipyorg].
-That is a different story, with a surprisingly similar overall arc.
+That is a different story, but with a surprisingly similar overall arc.
 What matters here is what NIPY set in motion: it drew us into collaboration with the broader ecosystem, where we learned together, shared problems and solutions across domain boundaries, and built the relationships that the rest of this paper traces.
 
 ## Scientific Python Before NumPy
@@ -52,8 +51,8 @@ Numeric, maintained by Paul Dubois at Lawrence Livermore National Laboratory, wa
 Early SciPy workshops at Caltech drew dozens of scientists from astronomy, bioinformatics, physics, and other fields, mostly researchers who were not primarily programmers and who wanted Python to solve concrete problems even though the stack was still fragile [@scipy02report; @vannini2002scipy02gbb].
 For domain scientists, Python already looked promising, but the underlying stack was fragmented enough that building on it felt risky.
 
-The fragmentation was architectural and social at the same time.
-Numeric underpinned SciPy and many existing tools, while numarray---developed at the Space Telescope Science Institute under Perry Greenfield's leadership---introduced a second, incompatible array implementation aimed at very large images; new projects were encouraged to use numarray, older ones could not easily migrate, and no agreed path to unification existed [@oliphant2004status; @oliphant2004comments].
+Numeric underpinned SciPy and many existing tools.
+On the other hand, numarray---developed at the Space Telescope Science Institute under Perry Greenfield's leadership---introduced a second, incompatible array implementation aimed at very large images; new projects were encouraged to use numarray, older ones could not easily migrate, and no agreed path to unification existed [@oliphant2004status; @oliphant2004comments].
 Meanwhile, the `numpy-discussion` list and the SciPy workshop acted as shared communication spaces across this divide, so the same people were debating Numeric vs. numarray in public even as their code bases remained split.
 
 ## The 2005 Meeting and the Future of SciPy
@@ -78,8 +77,9 @@ That commitment culminated, eighteen months later, in the release of NumPy 1.0 i
 
 NumPy 1.0 was not the foundation; it was what made the foundation possible.
 A scientific computing platform, comparable to what MATLAB or IDL provided, required far more: a vast collection of mature, performant algorithms spanning optimization, signal processing, linear algebra, statistics, differential equations, and more; a plotting system; an interactive environment; and the documentation, testing, and packaging discipline that makes all of it installable, trustworthy, and teachable.
-What NumPy 1.0 did was unlock pent-up energy.
-It resolved the array fragmentation that had made building on the ecosystem feel risky, and it gave the community a single stable target to build on together.
+<!-- a better word than discipline? --^ -->
+But NumPy 1.0 managed to unlock a lot of pent-up energy.
+By resolving the array fragmentation that had made building on the ecosystem feel risky, it gave the community a single stable library to build on, together.
 
 <!--
 https://github.com/numpy/numpy/graphs/contributors?from=10%2F5%2F2006&to=3%2F13%2F2009
@@ -96,14 +96,14 @@ What started as a neuroimaging software problem did not stay one.
 Looking for a way to build community‑owned neuroimaging tools, rather than relying on single‑owner lab software, pulled me and my collaborators into the broader scientific Python effort, because the array foundation that any such shared platform would need was itself unresolved.
 Solving our problem meant first helping solve SciPy's.
 
-The Berkeley meeting is the hinge in that story.
+The Berkeley meeting turned out to be pivotal that story.
 What made it work was not the agenda but the room: a hands-on lab that got working scientists using the tools immediately, two parallel tracks that let the NIPY discussion and the array negotiation proceed side by side, and evenings when both groups came back together to compare notes.
 Travis and Perry were in the building, not posting to a list---and the difference showed in what the discussion produced.
 
 What it produced was a plan: a unified array object, a roadmap that ran through NumPy 1.0 and, two years later, the 2007 sprint's board.
 What it did not yet produce was an ecosystem.
-The people in that room---neuroimagers, astronomers, statisticians---were oriented around one shared technical problem: building a foundation solid enough to trust.
-None of us was yet thinking about how to build, or hold together, a distributed collection of projects across dozens of scientific domains.
+The people in that room---neuroimagers, astronomers, statisticians---were oriented around one shared technical problem: having a foundation solid enough to build on.
+None of us was yet thinking about how to develop, or hold together, a distributed collection of projects across dozens of scientific domains.
 
 :::{important} Shared problems need shared rooms.
 The array unification, the plotting decision, the board and its commitments---none of it came from consensus reached asynchronously.
@@ -112,85 +112,97 @@ It came from a small, cross-disciplinary group choosing to be in the same buildi
 
 # How to Grow
 
+For the first decade, NumPy and SciPy developers were essentially the same people, releasing two different packages from the same small, tightly connected group.
+The SciPy toolkits, or `scikits`, began as another layer that we built on the same shared infrastructure, largely with the same hands.
+The SciPy conference was organized by that same small group as well.
+Over the decade that followed, each of these developed a community of its own, increasingly separate from the others and, eventually, separate from the people who had founded them.
+The clearest trace of that shift is almost bureaucratic: `numpy.scipy.org` became `numpy.org`; `ipython.scipy.org` became `ipython.org`; `astropy.scipy.org` became `astropy.org`; and `neuroimaging.scipy.org` became `nipy.org`.
+Each rename looks like housekeeping.
+Taken together, they mark something larger: SciPy stopped being one thing.
+<!--
+https://web.archive.org/web/20070622150504/http://new.scipy.org/
+https://web.archive.org/web/20100211214922/http://new.scipy.org/
+https://web.archive.org/web/20100419182500/http://new.scipy.org/content.html
+-->
+
+<!--
 Travis Oliphant in his "Future directions for SciPy in light of meeting at Berkeley" 2005 email wrote:
 "Many scientists used Python; few were SciPy devotees and even fewer contributed to SciPy."
 
 Stéfan van der Walt in his "The future of SciPy and its development infrastructure" 2009 email wrote:
 "SciPy has a large user community relative to the number of developers. A big library of code, used by many scientists, is supported by a small handful of people all over the world."
+-->
 
-## Infrastructure and Diaspora
+## Infrastructure and diaspora
 
-Between conferences, the community did not just meet; it worked together on top of a common technical substrate.
-The SciPy server infrastructure, maintained by Enthought, was the shared home for much of the ecosystem: mailing lists, Subversion repositories, issue trackers, and project websites, with projects living at addresses like `ipython.scipy.org`, `numpy.scipy.org`, `astropy.scipy.org`. and `neuroimaging.scipy.org`.
-Getting a new project onto that infrastructure meant emailing an Enthought administrator.
-Getting SVN access, a mailing list, or a project page meant waiting on someone else's schedule.
-By 2007, the server itself was failing: DNS zones were inconsistent across name servers, `httpd` crashed spontaneously and had to be restarted manually, adding new projects through the Virtualmin control panel "broke the system," and the administrator's own priority list opened with "httpd stops responding spontaneously" and "server load average is frequently too high" [emails2007admin].
-The infrastructure was not failing because Enthought was neglectful.
-They were doing the community a genuine service under real constraints, but it had reached the limits of what a small team supporting a fast-growing ecosystem could maintain on the side.
+In February 2009, Stéfan van der Walt posted to the `scipy-dev` list with a subject line that, unknown to him, echoed Travis Oliphant's email after the 2005 Berkeley meeting: "The future of SciPy and its development infrastructure" [vanderwalt2009future].
+In Travis' 2005 email, he had worried that there were "few SciPy devotees" and even fewer contributors.
+Now, four years later, Stéfan worried that SciPy was a "big library of code, used by many scientists," but still maintained by only a few people.
 
-The second problem was less about hardware and more about process.
-In February 2009, Stefan van der Walt posted to the scipy-dev list with a subject line that, unknown to him, echoed Travis Oliphant's from four years earlier: "The future of SciPy and its development infrastructure" [vanderwalt2009future].
-Stefan's diagnosis named a different kind of crisis: SVN-based workflows made contribution too hard; patches sat in Trac for a year or more without feedback; and the maintenance burden was concentrated on too few volunteers.
-His proposed solution was process: distributed version control, formal code review, higher standards for tests and documentation.
+Stéfan's diagnosis pointed to a different kind of crisis: getting commit access was too hard, and contributors' patches could sit for a year or more without feedback.
+His proposed solution was distributed version control, formal code review, and higher standards for tests and documentation.
 The thread that followed captured the tension the ecosystem was living through.
+There was no community consensus about distributed version control at the time; for some of us it looked like necessary infrastructure, for others like unfamiliar machinery that might raise the barrier to contribution rather than lower it.
 Travis worried that adding formal process would drive away contributors.
 Stefan and David Cournapeau argued that without it, the burden would become unsustainable.
 
-The projects that felt this friction most acutely were the ones that left first.
-Gaël Varoquaux---a member of the NIPY team and a collaborator on the neuroimaging problem that had motivated the whole enterprise---wrote to me on August 29, 2009, the Saturday after SciPy 2009 [varoquaux2009scikitlearn].
+Gaël Varoquaux---a member of the NIPY team---wrote to me the Saturday after SciPy 2009 [varoquaux2009scikitlearn].
 He had just run a Birds of a Feather session on establishing a standard machine learning package, building on the `scikits.learn` code from David Cournapeau's 2007 GSoC project that I had mentored.
 The enthusiasm had been "huge," he wrote, and he was ready to move quickly.
 But "in order to streamline the process, we need a mailing list, version control and a website."
-He had originally planned to use the SciPy server infrastructure, "but I am starting to feel that there is too much friction (eg I can't easily open up a mailing list, or give someone SVN access, let alone shell access, I have to ask someone)."
-His four requirements were direct: a mailing list, version control with a Trac-like interface, web hosting, and, "very important," "ability to control and give the control to the previous myself, without having to beg and cry."
-This conversation was not unique.
-It was one of many happening across the community at the same moment, as projects from statsmodels to `scikit-image` were arriving at the same conclusion by the same route.
 
-The response to that friction was a diaspora.
-Projects left the SciPy server infrastructure each choosing a platform that let them control their own mailing lists, repositories, and administration without depending on an external gatekeeper.
-What looked from the outside like fragmentation was also, from the inside, a necessary experiment.
-The community did not yet know what the right development infrastructure and process looked like, and the diaspora gave different projects the freedom to try different answers.
-Over the following years the community largely coalesced around GitHub for version control, continuous integration for tests, and rigorous documentation standards, practices that eventually spread back to NumPy and SciPy themselves.
+Getting a new project onto the SciPy infrastructure meant asking a busy administrator, sometimes including me, to add it.
+The server itself was failing: `httpd` crashed spontaneously and had to be restarted manually, and adding new projects was difficult and time-consuming.
+The infrastructure was not failing because anyone was neglectful.
+It was old hardware, a layered history of configuration decisions, and an operating system that needed a full reinstall---all sitting under a fast-growing ecosystem and a small group who could no longer maintain it on the side.
+
+Given the server situation, I recommended that Gaël look into other options.
+That conversation was not unique; projects from statsmodels to `scikit-image` were reaching the same conclusion by the same route.
+What followed was not merely a technical migration but an identity shift.
+The scikits had started as SciPy Toolkits---extensions to SciPy, built by much the same small group, on the same shared infrastructure.
+Once they left, most stopped describing themselves that way at all.
+`scikits.learn` became scikit-learn; other projects grew up with no connection to the scikits name or idea whatsoever.
+What had been imagined as one layer of a tool stack (`numpy`, `scipy`, and the `scikits`) became part of a larger ecosystem of independent projects built on top of a shared foundation.
 
 ## Stewarding Community and Conference
 
-The SciPy server infrastructure was not the only thing holding the community together.
-From 2002 onward, the annual SciPy conference had been a different kind of shared home, not a technical substrate but a social one, the one place each year where astronomers, neuroscientists, statisticians, and physicists who were building tools for each other would actually be in the same room.
-The 2005 Berkeley meeting had been possible, in part, because the conference had already created the network: Travis Oliphant, Perry Greenfield, John Hunter, and Fernando Pérez all knew one another through SciPy.
-The Birds of a Feather session at SciPy 2009 that reinvigorated `scikits.learn` was not an accident of scheduling.
-It was the conference doing what it had always done---putting people in a room and letting them find the next problem.
+For the first six years, Enthought had organized the conference and Caltech's Center for Advanced Computing Research had hosted it, with Enthought sponsoring students and handling logistics.
+In 2008, Travis Vaught of Enthought and I served as co-chairs, Gaël Varoquaux as program chair, and a recruited program committee set the program---and, for the first time, a proceedings review process produced published conference proceedings [cite].
+2008 was also the first EuroSciPy, held in Leipzig, Germany.
+Travis gave the keynote.
+In 2009, Prabhu Ramachandran and I co-chaired the first SciPy India Conference.
+Travis gave the keynote.
+<!--
+https://web.archive.org/web/20190909080804/http://scipy.github.io/old-wiki/pages/EuroSciPy2008.html
+https://web.archive.org/web/20251016230532/https://scipy.in/2009
+https://www.space-kerala.org/first-indian-scipy-conference-held-trivandrum
+-->
 
-While the SciPy server infrastructure was dispersing the community toward GitHub, the conference itself was moving in the opposite direction: from company ownership toward community ownership.
-From 2002 to 2007 the conference had been organized by Enthought and hosted by Caltech's Center for Advanced Computing Research, with Enthought sponsoring students and providing local logistics.
-In 2008 that changed: Travis Vaught of Enthought and I served as co-chairs, Gaël Varoquaux as program chair, a recruited program committee set the program, and---for the first time---a proceedings review process produced the first published SciPy conference proceedings [cite].
-I continued as co-chair through 2011 to ensure continuity and refine the process [cite].
-
-The proceedings machinery we built was designed to solve a problem the paper has already named: academic researchers who contributed to open source software could not get formal credit for it.
 Conference proceedings, published and citable, were a mechanism for converting that invisible work into something a tenure file could recognize.
-Papers were submitted as reStructuredText source in a public GitHub repository; review happened in the open, via pull requests attached to identifiable individuals; reviewers were acknowledged by name; and source code was required alongside each paper.
+Papers were submitted as reStructuredText source in a public GitHub repository; review happened in the open, via pull requests attached to identifiable individuals; reviewers were acknowledged by name.
 The toolchain---developed with Gaël Varoquaux and extended by Stéfan van der Walt into a system using Sphinx, LaTeX, custom scripts, and the `procbuild` preview bot---was an early instance of what would later be called "open peer review," embodying the principles I articulated in a 2012 paper titled "Learning from Open Source Software Projects to Improve Scientific Review" [cite].
-Its goal was explicitly iterative: reviewers and editors worked with authors to guide papers toward acceptance, so that submitting to SciPy meant opening your analysis to the same collaborative scrutiny that good open source development demands.
-This paper itself sits inside that lineage.
+Its goal was explicitly iterative: reviewers and editors worked with authors to guide papers toward acceptance, so that submitting to SciPy meant opening your writing to the same collaborative scrutiny that good open source development demands.
+
+My last year as co-chair for the SciPy conference was 2011.
+The people organizing the conference by then were no longer, by and large, the people maintaining the library.
+That shift was deliberate in a way the infrastructure diaspora was not.
+The scikits left `scipy.org` because the server and processes could no longer scale; the conference moved because we wanted it to---from company stewardship to community governance, from one annual meeting in California to a network of meetings on three continents.
+Proceedings made it easier for academic developers and users of scientific Python to justify attending; as more of those people came, the organizers naturally became drawn from a broader pool.
+By the end of the decade, "SciPy the conference" was clearly its own institution, with its own leadership and rhythms, loosely connected to the library and no longer run by the same small group.
 
 ## Lesson 2
 
-<!--
-:::{important} Lesson 4
-A shared technical infrastructure is not just scaffolding; it is part of what holds a community together.
-When it stops scaling, projects will find their own paths, and the diaspora will look like fragmentation.
-But if the ecosystem's foundation is solid and its norms are shared, diaspora is also proliferation: the same people, carrying the same practices, building new things in new places and, in the process, working out by experiment what the next generation of shared infrastructure should look like.
-:::
+A shared technical foundation is not just scaffolding; it is part of what holds a community together, but holding together and staying uniform are not the same thing.
+When that foundation stopped scaling, the people who depended on it did not disappear; they found their own paths, and what followed looked, from the outside, like fragmentation.
+From the inside it was something closer to growth: the same people, carrying norms first worked out together in Part I, building new things in new places, and discovering by experiment what a much larger ecosystem would need next.
 
-:::{important} Lesson 5
-The conference is a generative mechanism, not just a reporting venue: it supports the networks through which cross-domain collaboration happens, and it gives the dispersed community a fixed annual point of reconvening.
-The proceedings it developed applied the same open, iterative practices to scientific publishing that the community had already applied to software, and in doing so gave academic contributors a formal, citable record of work that tenure files had no other way to recognize.
-:::
--->
+The conference took a different route to the same outcome.
+Rather than scattering under pressure, it was deliberately opened: from a company-run event serving one small circle to a community-governed institution with its own proceedings, its own international meetings, and eventually its own leadership drawn from far beyond the group that had built NumPy and SciPy.
+Where the infrastructure diaspora and the scikits' departure were responses to something breaking, the conference's growth was a choice---proof that differentiation did not have to wait for a crisis to happen on purpose.
 
-:::{important} Diaspora can be proliferation.
-When infrastructure stops scaling, projects find their own paths.
-If the foundation is solid and the norms are shared,
-the same people carry the same practices to new places.
+:::{important} One thing became many.
+NumPy and SciPy largely split into communities of their own; the scikits scattered and mostly dropped the name; the conference outgrew the people who founded it.
+Diaspora was part of that story, but not the whole of it---what actually happened was differentiation, and differentiation is what let a handful of people become an ecosystem.
 :::
 
 # How to last

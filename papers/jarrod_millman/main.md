@@ -1,135 +1,296 @@
 ---
 # Ensure that this title is the same as the one in `myst.yml`
-title: "From fMRI Frustration to Scientific Python: A Perspective"
+title: "The Space to Build It: How Scientific Needs Built an Ecosystem"
 abstract: |
-  In 2004, Matthew Brett and I were frustrated: fMRI analyses were effectively locked inside lab-specific, GUI-driven toolboxes, built on top of closed scientific computing platforms, that made them extremely difficult to inspect, reproduce, or extend.
-  This frustration led to a 2005 meeting that brought together a small group of core scientific Python tool builders from astronomy, neuroscience, physics, and statistics, and then to a series of follow-up meetings alternating between Berkeley, Enthought's offices, and other venues.
-  This paper traces how that ground-up, cross-disciplinary collaboration, motivated as much by scientific reproducibility as by software aesthetics, helped a small set of unfunded, largely volunteer projects quietly supplant proprietary, well‑established software platforms, transformed a small, informal gathering into a large, well‑organized conference with a cutting‑edge, open, Git‑based proceedings system, and how the same people and patterns later shaped the Scientific Python project.
+  Open, community-owned scientific software does not emerge from good intentions alone; it takes real scientific needs, cross-domain collaboration, community coordination, and institutional anchors.
+  This paper traces one thread of how that combination played out: how a concrete problem in neuroimaging led to a 2005 meeting at UC Berkeley, then to a series of collaborations across astronomy, neuroscience, physics, and statistics, and eventually to the coordination structures and academic homes that now help sustain the scientific Python ecosystem.
+  It follows that journey from concerns with unreproducible pipelines and single-owner software, through the architectural decisions and invisible maintenance work that turned volunteer projects into shared infrastructure, and into the deliberate replication of those early patterns at larger scale---closing with what that history reveals about who is trusted with the room and time to build such infrastructure, and who pays for that time when their institutions will not.
 ---
 
-## Introduction
+# Introduction
 
-SciPy 2026 marks 25 years since a small group of scientists gathered to ask whether Python could become a serious tool for scientific computing.
-This paper traces one thread of that history: the role of UC Berkeley and a single question asked in frustration---not in the spirit of software craftsmanship, but out of a scientist's need to do better research.
-It is not a complete history of scientific Python, and it cannot be.
-Fernando Pérez, Matthew Brett, Travis Oliphant, John Hunter, Perry Greenfield, and many others were present at the same formative moments, and each of them carries a different account of what happened and why it mattered.
-What follows is one perspective, shaped by where I was standing and what I could see from there.
+Open scientific software infrastructure often begins with a single actor---a researcher, a lab, a company---whose vision, energy, and effort make its creation possible.
+And, while that initial focused, isolated effort may be required to start, it matters greatly what happens next.
+Durable infrastructure is built in layers: a technical foundation, followed by community governance, and then, ideally, institutional support.
+Each layer changes who holds the infrastructure: first from a single owner to a community, and later from informal practice to institutional support.
+Each layer must be deliberately built, and rebuilt, as the infrastructure grows.
+When those layers get built, the infrastructure becomes durable.
+When they do not, growth stalls and the burden of keeping it alive rests on a shrinking circle of people.
 
-The question that set this story in motion was scientific before it was technical.
-fMRI analyses in 2004 typically ran through lab-specific, GUI-driven toolboxes such as SPM---GPL-licensed but written in the proprietary MATLAB environment and owned by a single lab---where a researcher would click through menus, adjust parameters by hand, and paste plots into a presentation, only to find months later that no record existed of what had been clicked or in what order.
-The analyses were, in practice, irreproducible.
-Matthew Brett's provocation---"Why don't we rewrite SPM in Python?"---was the engineering response to that scientific failure, not the other way around.
-The tools we went on to build were the means; the end was brain imaging research that could be trusted, shared, and re-examined.
+This paper is personal.
+It is shaped by the collaborations I was part of and the problems that were in front of me at the time.
+Many of the people involved in this work would tell the story differently, from their own vantage points and concerns.
 
-- Overview of the paper's argument and structure.
-- Methodological note: this paper draws on primary sources---mailing list archives, GitHub contributor histories, published proceedings, and grant records.
+Each layer, once built, eventually stops working at the next scale, forcing the community to decide, consciously or not, whether and how to rebuild it.
+The three sections that follow trace that building and rebuilding in turn: how the technical foundation got built ("How to start"), how the community that depended on it grew past what that foundation alone could hold together ("How to grow"), and how institutional anchors emerged to sustain what community practice alone could not ("How to last").
+A single mechanism recurs across all three: aspirations become plans, and plans become foundations, only when a small, cross-disciplinary group shares a room, more than once, rather than negotiating asynchronously from a distance.
+But describing those layers only explains how the ecosystem was built; it does not explain why researchers, scientists, and teachers who were not primarily programmers kept doing this work, often unpaid and unrecognized by the institutions that employed them.
+That deeper question is the one this paper answers last, because the answer only becomes visible once the full three decades are in view.
 
-## The Reproducibility Problem and the Early Ecosystem
+# How to start
+
+In 2003, I supported a neuroimaging analysis pipeline at Berkeley that was an _ad hoc_ collection of MATLAB toolboxes, IDL routines, C/C++ programs, AWK scripts, and shell glue that nobody fully understood.
+Results from our center and others were difficult to verify.
+There was no mechanism to rerun an analysis from raw data.
+Scientific integrity was a clear concern, and it was made worse by technical constraints.
+The academic incentive system amplified the problem: writing and maintaining analysis software did not appear in tenure files, open source authorship diluted traditional credit models, and computational reproducibility was not a recognized research output.
+
+My colleague, Matthew Brett, was initially concerned less about reproducibility itself and more about the way neuroimaging software concentrated power: the dominant analysis tools were effectively single-owner open source, with one lab setting priorities and methods for the field.
+If you disagreed with those methods, your options were to fork that single-owner project or to invest in a community-owned alternative that could be governed by the wider neuroimaging community.
+That made the politics of the software visible in a way I had not thought much about before.
+
+## A risky solution
+
+Perhaps naively, Matthew and I set out to build a community-owned neuroimaging platform in Python that would make analyses scriptable from raw data to published results [@10.1109/MCSE.2007.46].
+Python looked like the right language, but the surrounding platform was still only half-formed.
+Travis Oliphant, Eric Jones, and Pearu Peterson had released `scipy` by combining packages that they each wrote as a "superpackage" of numerical integration, optimization, special functions, and more [@10.1038/s41586-020-2649-2; @10.1038/s41592-019-0686-2].
+It was built on top of `numeric`, a multi-dimensional array package maintained by Paul Dubois at Lawrence Livermore National Laboratory.
+Jonathan Taylor had already begun `brainstat` for fMRI analysis, John Hunter (`matplotlib`) was developing `pbrain` for EEG and ECoG analysis, and John introduced us to Fernando Pérez (`ipython` and later `jupyter`), connecting our neuroimaging effort to the broader Python tools that were taking shape around it.
+
+At the same time, Perry Greenfield's team at the Space Telescope Science Institute had introduced `numarray`: a second, incompatible array implementation aimed at very large images. New projects were encouraged to use it, older ones could not easily migrate, and no agreed path to unification existed [@oliphant2004status; @oliphant2004comments].
+Meanwhile, the `numpy-discussion` list and the SciPy conference acted as shared communication spaces across this divide, so the same people were discussing `numeric` and `numarray` even as their code bases remained split.
+
+## The 2005 meeting
+
+As we planned a neuroimaging meeting for March 2005 at Berkeley, we were watching the `numpy-discussion` threads that followed Travis's January `numeric3` design proposal [@oliphant2005updating] and February status update [@oliphant2005numeric3].
+In those posts, Travis described `numeric3` as a bridge between `numeric` and `numarray`, based largely on the `numeric` code base, and emphasized the need to keep `numeric`'s tight homogeneous-array implementation moving forward while still learning from `numarray`.
+The idea that `numeric` and `numarray` should eventually merge was there, but only as an aspiration.
+By inviting Travis (`numeric3`) and Perry (`numarray`) to join the Berkeley meeting and to speak with Guido van Rossum (`python`) and Paul (`numeric`), we hoped to turn that aspiration into a shared plan for a unified array object and package.
+
+The first day was a hands-on laboratory, "_Scientific Python for Neuroscience Research_," taught by Fernando and John and designed to make `numeric`, `scipy`, `ipython`, `matplotlib`, and related tools immediately usable for working neuroimaging scientists.
+The next two days were split into two parallel tracks: one, focused on neuroimaging; the other, worked through whether and how a unified array object could be built that preserved the strengths of both `numeric` and `numarray`.
+Each evening we reconvened to discuss the day's work.
+
+After the meeting, two `numpy-discussion` threads communicated the outcomes and made the unification plan explicit.
+Perry's "_Notes from meeting with Guido regarding inclusion of array package in Python core_" [@perry2005guido] concluded that including an array package in Python would be a distraction that would sap energy from the unification work that needed to happen.
+Travis' "_Future directions for SciPy in light of meeting at Berkeley_" [@oliphant2005berkeley] opened a public discussion that quickly resolved into a modular plan for SciPy: a minimal, easy-to-install `scipy_core` that could replace both `numeric` and `numarray`; `scipy` itself as a separate package (or series of packages) of algorithms built on that core; plotting moved out into its own libraries such as `matplotlib`; and domain-specific packages, for astronomy or neuroimaging, living as independent projects rather than inside `scipy`.
+Travis committed to spending the following five to six months making `scipy_core`.
+That commitment culminated, eighteen months later, in the release of `numpy 1.0` in October 2006 [@oliphant2006numpy1.0].
+
+## Building the foundation
+
+While transformational in its unification of the ecosystem, `numpy 1.0` was just the beginning of what needed to be built.
+A scientific computing platform, comparable to what MATLAB or IDL provided, required far more: a vast collection of mature, performant algorithms spanning optimization, signal processing, linear algebra, statistics, differential equations, and more; a plotting system; an interactive environment; and the documentation, testing, and packaging infrastructure that makes all of it installable, trustworthy, and teachable.
+By resolving the array fragmentation that had made building on the ecosystem feel risky, it gave the community a single stable library to build on, together.
 
 <!--
-The purpose of NIPY is to make it easier to do better brain imaging research. We believe that neuroscience ideas and analysis ideas develop together. Good ideas come from understanding; understanding comes from clarity, and clarity must come from well-designed teaching materials and well-designed software. The software must be designed as a natural extension of the underlying ideas.
+https://github.com/numpy/numpy/graphs/contributors?from=10%2F5%2F2006&to=3%2F13%2F2009
+https://github.com/scipy/scipy/graphs/contributors?from=10%2F5%2F2006&to=3%2F13%2F2009
+-->
+In December 2007, I organized a Berkeley sprint with Travis Oliphant, Eric Jones, Robert Kern, and others, with newer contributors like David Cournapeau and Stéfan van der Walt participating remotely, to put together a `scipy 1.0` roadmap, improve the organizational structure around `scipy`, and plan more activities to help `scipy` development build momentum.
+After the sprint, Travis' `scipy-dev` email communicated the outcomes and announced a new `scipy` board (Jones, Kern, Millman, Oliphant) with a specific commitment: monthly virtual doc-days and bug-days, coordinated over IRC, with at least one board member present at each [@oliphant2007sprint].
+Over the following two years, David and Stéfan became two of the most active committers to both `numpy` and `scipy`, working alongside long-time contributors, remote collaborators, and newer volunteers to restructure and expand the library, build and improve the test infrastructure, standardize and vastly expand the documentation, and create development processes and tooling that made contributions from a widely distributed, cross-disciplinary community sustainable.
+By the time `scipy 0.7` shipped in February 2009, the platform that had been rough and fragile in 2007 was something scientists could install, trust, and build on [@millman2009scipy070; @scipy070notes].
 
-- https://nipy.org/nipy/mission.html#nipy-mission
+## Lesson 1
+
+What started as a neuroimaging software problem did not stay one.
+Looking for a way to build community-owned neuroimaging tools, rather than relying on single-owner lab software, pulled me and my collaborators into the broader scientific Python effort, because the array foundation that any such shared platform would need was itself unresolved.
+Solving our problem meant first helping solve `scipy`'s.
+
+The Berkeley meeting turned out to be decisive.
+What made it work was not the agenda but the room: a hands-on lab that got working scientists using the tools immediately, two parallel tracks that let the neuroimaging discussion and the array negotiation proceed side by side, and evenings when both groups came back together to compare notes.
+Travis and Perry were in the building, not posting to a list---and the difference showed in what the discussion produced.
+
+What it produced was a plan: a unified array object, a roadmap that ran through `numpy 1.0` and, two years later, the 2007 sprint's board.
+What it did not yet produce was an ecosystem.
+The people in that room (neuroimagers, astronomers, statisticians) were oriented around one shared technical problem: having a foundation solid enough to build on.
+None of us was yet thinking about how to develop, or hold together, a distributed collection of projects across dozens of scientific domains.
+
+:::{important} Shared problems need shared rooms.
+A mailing list can carry information, but it cannot carry the trust required to trade a position for a compromise; that trade happens face to face, and only when the people trading it have been given the standing, and the time, to spend on it.
+The rooms get bigger later (a sprint, then a summit), but the trade being made in each one is the same one this paper returns to at the end.
+:::
+
+# How to grow
+
+For the first decade, `numpy` and `scipy` developers were essentially the same people, releasing two different packages from the same small, tightly connected group.
+The `scipy` toolkits, or `scikits`, began as another layer that we built on the same shared infrastructure, largely with the same hands.
+The SciPy conference was organized by that same small group as well.
+Over the decade that followed, each of these developed a community of its own, increasingly separate from the others and, eventually, separate from the people who had founded them.
+The clearest trace of that shift is almost bureaucratic: `numpy.scipy.org` became `numpy.org`; `ipython.scipy.org` became `ipython.org`; `astropy.scipy.org` became `astropy.org`; and `neuroimaging.scipy.org` became `nipy.org`.
+Each rename looks like housekeeping.
+Taken together, they add up to something larger: SciPy stopped being one thing.
+<!--
+https://web.archive.org/web/20070622150504/http://new.scipy.org/
+https://web.archive.org/web/20100211214922/http://new.scipy.org/
+https://web.archive.org/web/20100419182500/http://new.scipy.org/content.html
 -->
 
-- Neuroimaging context: why SPM and MATLAB dominated, what was structurally missing, and why domain scientists had little leverage over the tools they depended on.
-  The canonical failure mode: a researcher "twiddling controls in a graphical user interface ... pasting plots into PowerPoint" with no record of what was done or in what order.
-- The reproducibility problem as the generative frustration: published fMRI results were difficult to verify, pipelines were not scriptable, and no mechanism existed for a reader to re-run an analysis from raw data.
-- Personal entry point: joining Berkeley's Brain Imaging Center, encountering the problem alongside Matthew Brett.
-- Why the frustration was generative: domain scientists as reluctant but necessary software builders; the insight that bad tooling was a scientific integrity problem, not merely an inconvenience.
-- The tension already present at the start: doing the right thing for science inside an academic incentive system that did not reward software work, diluted authorship in open-source models, or reproducibility as a research output.
+<!--
+Travis Oliphant in his "Future directions for SciPy in light of meeting at Berkeley" 2005 email wrote:
+"Many scientists used Python; few were SciPy devotees and even fewer contributed to SciPy."
 
-- State of scientific Python: SciPy 0.1, the Caltech workshop (2002), a few dozen scientists experimenting with Numeric (and a move toward numarray).
+Stéfan van der Walt in his "The future of SciPy and its development infrastructure" 2009 email wrote:
+"SciPy has a large user community relative to the number of developers. A big library of code, used by many scientists, is supported by a small handful of people all over the world."
+-->
 
-:::{important} Lesson 0
-The original motivation was not curiosity about Python; it was the realization that our fMRI analyses were effectively irreproducible, locked in opaque, GUI-driven workflows that we and others could neither rerun nor audit.
+## Infrastructure and diaspora
+
+In February 2009, Stéfan van der Walt posted to the `scipy-dev` list with a subject line that, unknown to him, echoed Travis Oliphant's email after the 2005 Berkeley meeting: "_The future of SciPy and its development infrastructure_" [vanderwalt2009future].
+In Travis' 2005 email, he had worried that there were "few SciPy devotees" and even fewer contributors.
+Now, four years later, Stéfan worried that `scipy` was a "big library of code, used by many scientists," but still maintained by only a few people.
+
+Stéfan's diagnosis pointed to a different kind of crisis: getting commit access was too hard, and contributors' patches could sit for a year or more without feedback.
+His proposed solution was distributed version control, formal code review, and higher standards for tests and documentation.
+The thread that followed captured the tension the ecosystem was living through.
+There was no community consensus about distributed version control at the time; for some of us it looked like necessary infrastructure, for others like unfamiliar machinery that might raise the barrier to contribution rather than lower it.
+Travis worried that adding formal process would drive away contributors.
+Stéfan and David Cournapeau argued that without it, the burden would become unsustainable.
+
+Gaël Varoquaux, a member of the neuroimaging team, wrote to me the Saturday after SciPy 2009 [varoquaux2009scikitlearn].
+He had just run a Birds of a Feather session on establishing a standard machine learning package, building on the `scikits.learn` code from David Cournapeau's 2007 GSoC project that I had mentored.
+The enthusiasm had been "huge," he wrote, and he was ready to move quickly.
+But "in order to streamline the process, we need a mailing list, version control and a website."
+
+Getting a new project onto the SciPy infrastructure meant asking a busy administrator, sometimes including me, to add it.
+The server itself was failing: `httpd` crashed spontaneously and had to be restarted manually, and adding new projects was difficult and time-consuming.
+The infrastructure was not failing because anyone was neglectful.
+It was old hardware, a layered history of configuration decisions, and an operating system that needed a full reinstall, all sitting under a fast-growing ecosystem and a small group who could no longer maintain it on the side.
+
+Given the server situation, I recommended that Gaël look into other options.
+That conversation was not unique; projects from statsmodels to `scikit-image` were reaching the same conclusion by the same route.
+What followed was more than a technical migration. It was an identity shift.
+The `scikits` had started as extensions to `scipy`, built by much the same small group, on the same shared infrastructure.
+Once they left, most stopped describing themselves that way at all.
+`scikits.learn` became scikit-learn; other projects grew up with no connection to the `scikits` name or idea whatsoever.
+What had been imagined as one layer of a tool stack (`numpy`, `scipy`, and the `scikits`) became part of a larger ecosystem of independent projects built on top of a shared foundation.
+
+## Community and conference
+
+For the first six years, Enthought had organized the conference and Caltech's Center for Advanced Computing Research had hosted it, with Enthought sponsoring students and handling logistics.
+In 2008, Travis Vaught of Enthought and I served as co-chairs, Gaël Varoquaux as program chair, and a recruited program committee set the program. For the first time, a proceedings review process produced published conference proceedings [cite].
+2008 was also the first EuroSciPy, held in Leipzig, Germany.
+Travis gave the keynote.
+In 2009, Prabhu Ramachandran and I co-chaired the first SciPy India Conference.
+Travis gave the keynote.
+<!--
+https://web.archive.org/web/20190909080804/http://scipy.github.io/old-wiki/pages/EuroSciPy2008.html
+https://web.archive.org/web/20251016230532/https://scipy.in/2009
+https://www.space-kerala.org/first-indian-scipy-conference-held-trivandrum
+-->
+
+Conference proceedings, published and citable, were a mechanism for converting that invisible work into something a tenure file could recognize.
+Papers were submitted as reStructuredText source in a public GitHub repository; review happened in the open, via pull requests attached to identifiable individuals; reviewers were acknowledged by name.
+The toolchain, developed with Gaël Varoquaux and extended by Stéfan van der Walt into a system using Sphinx, LaTeX, custom scripts, and the `procbuild` preview bot, was an early instance of what would later be called "open peer review" and put into practice the principles I articulated in a 2012 paper titled "_Learning from Open Source Software Projects to Improve Scientific Review_" [cite].
+Its goal was explicitly iterative: reviewers and editors worked with authors to guide papers toward acceptance, so that submitting to SciPy meant opening your writing to the same collaborative scrutiny that good open source development demands.
+
+My last year as co-chair for the SciPy conference was 2011.
+The people organizing the conference by then were no longer, by and large, the people maintaining the library.
+That shift was deliberate in a way the infrastructure diaspora was not.
+The `scikits` left `scipy.org` because the server and processes could no longer scale; the conference moved because we wanted it to---from company stewardship to community governance, from one annual meeting in California to a network of meetings on three continents.
+Proceedings made it easier for academic developers and users of scientific Python to justify attending; as more of those people came, the organizers naturally became drawn from a broader pool.
+By the end of the decade, "SciPy the conference" was clearly its own institution, with its own leadership and rhythms, loosely connected to the library and no longer run by the same small group.
+
+## Lesson 2
+
+A shared technical foundation is more than scaffolding: it is part of what holds a community together. But holding together and staying uniform are not the same thing.
+When that foundation stopped scaling, the people who depended on it did not disappear; they found their own paths, and what followed looked, from the outside, like fragmentation.
+From the inside it was something closer to growth: the same people, carrying norms first worked out together, building new things in new places, and discovering by experiment what a much larger ecosystem would need next.
+
+The conference took a different route to the same outcome.
+Rather than scattering under pressure, it was deliberately opened: from a company-run event serving one small circle to a community-governed institution with its own proceedings, its own international meetings, and eventually its own leadership drawn from far beyond the group that had built `numpy` and `scipy`.
+Where the infrastructure diaspora and the `scikits`' departure were responses to something breaking, the conference's growth was a choice: proof that differentiation did not have to wait for a crisis to happen on purpose.
+
+:::{important} One thing became many, by accident and by design.
+The ecosystem scattered because the infrastructure that held them broke; the conference grew apart because the people running it chose to let it.
+Both count as differentiation, but only one of them required a crisis first. That is the more useful lesson for a community trying to grow on purpose, rather than waiting to be forced.
 :::
 
-## The 2005 Meeting and the Follow-up Series
+# How to last
 
-- The 2005 Berkeley meeting: attendees (Hunter, Perez, Oliphant, Greenfield, Taylor, and others), context, and goals.
-  The framing was explicitly cross-disciplinary: astronomy, neuroscience, physics, and statistics in one room, united by the same tool frustrations.
-- Eric Jones and Enthought: commercial support, Austin as the second node in the meeting rotation, and why Enthought's participation mattered structurally.
-- Primary source evidence: the March 2005 scipy-dev threads document specific decisions---NumPy unification, SciPy core + domain packages, packaging as a first-class concern---that can be traced forward to their outcomes.
-- The follow-up meeting rotation: Berkeley, Enthought's offices in Austin, collaborators at INRIA; not a one-off event but a deliberate series.
-- The December 2007 Berkeley sprint: documented outcomes, Travis Oliphant's acknowledgment of the organizing role, and the announcement of a continuing informal developer meeting series.
-- The April 2008 Berkeley sprint: Eric Jones, Robert Kern, Jonathan Taylor, Stefan van der Walt, Fernando Perez, Gael Varoquaux---the graph of connections made visible in one room.
-- Technical decisions and their consequences: the NumPy naming decision, the sandbox model, the scikits architecture.
-- NIPY: the domain project that motivated the question.
-  - First NIH proposal (2005, rejected), second grant (2006, funded), dedicated developers hired (Christopher Burns, Tom Waite, 2007).
-  - Concrete outputs: NiBabel, NiPype, DiPy, the core NIPY library.
-  - Publication: Millman and Brett, *Computing in Science and Engineering* (2007)---one of the earliest public arguments that Python was ready for serious scientific use, and a direct statement of the reproducibility motivation [@millman2007analysis].
-- The 2014 Millman--Pérez chapter "Developing Open Source Scientific Practice" (dedicated to John Hunter) as the retrospective written articulation of the philosophy implicit in these decisions: the "computational research life cycle," the argument that open-source practice *is* scientific practice, and the introduction of "literate computing" via IPython Notebook as distinct from mere literate programming [@millman2014developing].
+At the end of the second decade we faced a new problem: there was no longer anyone with the mandate, or the mechanism, to hold the ecosystem together.
+As individual projects matured, whole scientific domains (neuroimaging, geospatial data science, high-energy physics) developed their own internal coordination structures, mailing lists, and governance conventions.
+This domain-level organization was healthy in many respects.
+It also meant that an increasing amount of work that was really ecosystem-wide in scope, packaging standards, CI practices, documentation tooling, was being developed in domain-specific silos and reinvented independently across communities.
+Newer maintainers and contributors built careers within a single project or domain rather than across several.
+The cross-disciplinary experience that those of us who had been there at the beginning carried was no longer naturally transmitted to the next generation.
+The `scipy.org` website (nominally maintained by the `scipy` library team, effectively serving as the ecosystem's front door) had become a symbol of that failure of transmission: a shared resource that no one had the mandate to govern.
 
+## Ecosystem coordination
 
-:::{important} Lesson 1
-Small, in-person meetings with mixed domain and tool participants produce durable roadmap decisions---and the mailing list archive provides the paper trail to verify this.
+In 2020, Stéfan and I co-founded the Scientific Python Project (SPP) with support from the Alfred P. Sloan Foundation [@scientificpython2020planning] to provide what the ecosystem needed, not the SciPy server's centralized infrastructure, which individual projects had rightly outgrown, but a shared layer above the individual projects: cross-project recommendations, developer summits that worked like the early sprints (small, cross-disciplinary, and work-focused), shared tooling and discussion forums, and a common landing page for the ecosystem `scientific-python.org`.
+Early community outreach by Juanita Gomez and project leadership by Brigitta Sipőcz were especially important in turning SPP from a small node into a functioning ecosystem hub.
+
+The 2023 Scientific Python Developer Summit illustrated what this cross-project coordination makes possible.
+Henry Schreiner had developed a comprehensive development guide for the `scikit-hep` community, high-energy physics, that covered modern packaging, testing, CI, documentation, and more; in parallel, Dan Allan at the National Synchrotron Light Source II had developed complementary guidelines for his community.
+Both guides addressed concerns that had nothing to do with the specific scientific domain and everything to do with the shared challenge of building maintainable scientific Python packages.
+At the summit, that work was merged, rebranded as an ecosystem-wide resource, and released as the Scientific Python Development Guide [sppdevguide2023]: a signal, concrete and deliberate, that domain-specific silos could be dissolved when the right forum existed to bring people together.
+The summit worked because it worked like the early meetings and sprints: small, cross-disciplinary, organized around real work rather than reports.
+
+## Academic anchoring
+
+The story so far has been mostly about software: an array object, a library, an ecosystem, a software conference, a coordination layer.
+But this ecosystem changed more than code: it changed the people and the places that built it.
+Our neuroimaging collaboration brought Fernando Pérez to Berkeley's Brain Imaging Center (BIC) as a research scientist around 2008, where he continued developing IPython and, not long after, co-founded Project Jupyter.
+Over the years that followed, scientific Python and Jupyter colleagues who came to Berkeley for a meeting, a sprint, or a few months of collaboration became part of life at the BIC and, later, at Berkeley more broadly.
+Min Ragan-Kelley (`ipython` and later `jupyter`) was among those who first came to work alongside us this way, one of many such visits I won't try to enumerate.
+The pull reached graduate students, too.
+Kirstie Whitaker, then a neuroimaging PhD student, has described how Cindee Madison (part of our neuroimaging collaboration) mentored her in learning Python and navigating open source norms and culture, ultimately reshaping her career. Kirstie's is one version of a story that played out, in smaller ways, across generations of Berkeley researchers who found themselves drawn into the ecosystem they had only meant to borrow a tool from.
+
+That gravitational pull eventually helped reorganize the university around it.
+The same community of scientific Python and Jupyter contributors that had been informally passing through Berkeley helped establish the Berkeley Institute for Data Science (BIDS), which Fernando co-founded, and BIDS' early success fed into the university's decision to launch the College of Computing, Data Science, and Society and, within it, a Data Science major that is now the largest on campus [cite].
+The undergraduate curriculum built on that foundation, Data 8 and Data 100, uses NumPy, SciPy, Matplotlib, and Jupyter notebooks as the substrate for the largest introductory and largest upper-division courses at Berkeley, where thousands of students each semester do hands-on computational work without sacrificing rigor [cite].
+That curriculum did not stay on campus: more than fifty universities and colleges have since adopted Data 8 or its components, several through Berkeley-supported partnerships with the National Science Foundation's CloudBank project that extended the same open-source, cloud-based teaching stack to community colleges and other UC campuses [cite].
+
+BIDS today is where that convergence is easiest to see.
+Fernando is now the Faculty Director, a decade after co-founding it; Stéfan and Min work there on the technical and infrastructure side; Kirstie, the graduate student whose career had once been redirected by conversations with Cindee, returned in 2025 as BIDS's Executive Director; and I lead Berkeley's Open Source Program Office from within it.
+Fernando has written that Berkeley's leadership in this stack "is not 'owned' by Berkeley," but built by scientists who "partner with an extended, distributed community of other researchers and developers to build an ecosystem that benefits all" [cite].
+This is the same community-ownership argument this paper opened with in 2003, now stated at the level of a university rather than a single lab.
+What comes next is not yet settled.
+Fernando has described BIDS as a space for open scholarship, open source, and interdisciplinary collaboration on AI in science and society [cite], and how artificial intelligence reshapes the way scientists write code, teach it, and learn it is the open problem this community will now have to work out together, in much the same way it once worked out the future of the array object in a room in Berkeley.
+
+## Lesson 3
+
+Why did two of the most consequential projects in scientific computing (the scientific Python and Jupyter ecosystems) have roots inside a neuroimaging lab at Berkeley that was not, on paper, in the software business at all?
+
+One condition that mattered enormously was how Mark D'Esposito ran his lab.
+Mark wanted good people in the lab producing good work, and he trusted his team enough to let them pursue what they judged important, even when it sometimes drifted far from neuroscience.
+That trust is what let Matthew, Fernando Pérez, and me spend real time on scientific Python and, later, Jupyter, work that was not in any of our job descriptions and that did not, on its own, advance the neuroscience questions the lab was trying to answer.
+
+Mark gave me the freedom to decide, together with Matthew and Fernando, what the major problems on the horizon were, and then to work on them.
+He gave us shared space, in the literal sense of desks in the same building, and a subtler kind of space: freedom from having to justify that work in terms of our immediate career prospects.
+That combination, more than any specific decision about software or method, is what let a small group inside a neuroimaging lab become a nucleus that drew in others and helped grow two community-owned ecosystems.
+
+Being embedded in a neuroimaging lab rather than a software lab shaped our work.
+Our colleagues were neuroscientists, not programmers, so anything we built had to be installable, learnable, and usable by people who had no interest in becoming software developers.
+That constraint pushed us toward teaching as much as toward building: writing documentation and tutorials, running hands-on sessions, and treating the question of how someone would learn a tool as inseparable from the question of how to design it.
+<!--
+The same instinct is written into our Neuroimaging in Python (NIPY) collaboration's mission statement, drafted in the project's early years:
+
+:::{blockquote}
+The purpose of NIPY is to make it easier to do better brain imaging research. We believe that neuroscience ideas and analysis ideas develop together. Good ideas come from understanding; understanding comes from clarity, and clarity must come from well-designed teaching materials and well-designed software. The software must be designed as a natural extension of the underlying ideas.
+
+--- [https://nipy.org/nipy/mission.html](https://nipy.org/nipy/mission.html)
+:::
+-->
+
+Our collaborations with astronomers, physicists, and statisticians meant our tools were constantly tested against needs that had nothing to do with neuroimaging, which kept our discussions from narrowing into a closed conversation among people who already agreed with each other.
+It also connected us to larger conversations about open science and reproducibility that were happening well outside any one department, so the problems we were facing were visibly the same problems other fields were running into.
+
+Matthew, Fernando, and I were lucky.
+Many of the people who built and sustained this ecosystem did not have a Mark D'Esposito, and did the work anyway: on nights and weekends, on volunteered time, on the strength of believing in something their institutions gave them no formal credit for.
+Some took real career risks to keep contributing.
+Many could not sustain that position indefinitely and left for industry, where the demands of a job rarely leave room for the kind of unstructured, long-horizon tinkering that built the scientific Python and Jupyter ecosystems.
+The space that made this possible was never distributed evenly, and a great deal of this ecosystem was built by people paying, personally, for a trust their own institutions were unwilling to extend.
+
+That is changing.
+BIDS is one attempt to make institutionally what Mark gave informally: room, trust, and time, backed by something more durable than one director's goodwill.
+But these remain exceptions rather than the norm, and they are not yet enough to catch everyone this ecosystem depended on and then let go.
+
+:::{important} It was the space to build it.
+This ecosystem lasted because some people were trusted with room to decide what mattered and time to work on it.
+It has also lost contributors, and capacity, because that trust was never extended widely or durably enough.
+Making it durable is the work still ahead.
 :::
 
-## Building the Conference and Community
+# Conclusion
 
-- Release management: volunteering for NumPy 1.0.3.1 and SciPy 0.5.2, the SciPy 0.6.x branching, and what it meant to take on that stewardship role without institutional mandate.
-- SciPy conference: chairing 2008--2011 as it grew from a small workshop to an international venue.
-- Proceedings machinery: the pre-Curvenote tooling; a concrete example of shared documentation infrastructure created before commercial tools existed for the job.
-- The SciPy proceedings as a reproducibility experiment in miniature: open, GitHub-based, line-by-line review of scientific articles; reviewers acknowledged by name; source code required alongside papers.
-  This was a direct institutional embodiment of the proposals later published in Millman (2012), "Learning from Open Source Software Projects to Improve Scientific Review," *Frontiers in Computational Neuroscience*---written while the proceedings machinery was being built and reflecting what was already being done in practice [@millman2012learning].
-- Documentation marathons and doc-days: coordinated global efforts (2008 marathon, Paris doc-day with van der Walt and the INRIA group) as a pattern of collective action across time zones.
-- NumFOCUS (2012): why a fiscal sponsor was needed, what it formalized, and the founding board (Oliphant, Perez, Greenfield, Hunter, Scopatz, Millman) as a roster of people who trace their connections partly to the 2005 meeting.
-- An honest note on what took longer than expected: the "toward SciPy 1.0" thread dates from 2008; SciPy 1.0 shipped in 2017; packaging pain identified in 2005 was not resolved until wheels in 2014.
-  Some problems require a decade of patient infrastructure work, not just a good meeting.
-- The tension with academic incentives, revisited: building the conference proceedings, mentoring GSoC students, and maintaining release branches were invisible in tenure files; the community was doing important work that its institutions could not yet see or reward.
+This account is mine, but the pattern it traces is not.
+A concrete problem that outgrows its original domain, a small group that chooses to share a room until an aspiration becomes a plan, and a foundation later reorganized (deliberately or under pressure) into something many hands can sustain: this arc is not unique to numpy, scipy, or Berkeley, and other ground-up collaborations may recognize some version of it in their own histories.
+It is fitting that this account spans almost exactly the twenty-five years the SciPy conference itself has now completed.
+The same needs that pulled a handful of neuroimagers, astronomers, and statisticians into one room in 2005 are what still pull new communities into this one today, and the work of extending enough trust, time, and institutional support to sustain them is, a quarter century on, still not finished.
 
-:::{important} Lesson 2
-The conference and its proceedings are a coordination mechanism and a reproducibility experiment, not just a venue; peer review and citable papers changed who felt welcome to contribute and how contributions were recognized.
-:::
+# Acknowledgements
 
-## Three Scikits, One Question
-
-- Frame: the "SciPy core + domain packages" model was designed to bootstrap projects until they were large enough to stand alone---and all three of the scikits below outgrew the namespace.
-  Each was also a concrete answer to the reproducibility problem: scriptable, testable, auditable alternatives to GUI-driven or proprietary workflows.
-- **statsmodels**: Jonathan Taylor's `scipy.stats.models` code, included in SciPy, then removed and dormant; revived via GSoC 2009; GitHub contributor graph (March 2008--May 2009) as primary source.
-  Making statistical models inspectable and scriptable rather than produced by a point-and-click interface was itself a reproducibility contribution.
-- **scikit-learn**: David Cournapeau's GSoC 2007 project; mailing list evidence of Berkeley mentorship (Millman and Perez advising the sandbox-to-scikits migration); INRIA taking over leadership in 2010---not a coincidence, as Varoquaux and the INRIA group were already part of the Berkeley/Austin/INRIA meeting rotation.
-- **scikit-image**: Stefan van der Walt starting the project at Stellenbosch in 2009; already a close collaborator (March 2008 Paris doc-day); his eventual move to BIDS closes the loop.
-- **DiPy**: direct heritage of the original neuroimaging question; Eleftherios, Ariel, and others building on the NIPY foundation.
-- **Paul Ivanov**: bridging neuroimaging and IPython/Jupyter; another Berkeley-connected figure whose contributions are often invisible in retrospectives.
-- **GSoC as a mechanism**: both statsmodels and scikit-learn were bootstrapped partly through GSoC, which provided funded student labor to activate dormant or early-stage code; Berkeley's mentorship role in GSoC was deliberate.
-- The "activation of latent code through community" pattern: all three core scikits involved code that existed but was orphaned or dormant before the network activated it.
-  Survival depended not on the quality of the code alone but on the existence of a network of people who knew the code existed and cared enough to revive it.
-- The proof that the tools worked: by 2015, the full reproducibility pipeline that motivated the original frustration was teachable to undergraduates in a single semester.
-  The 2018 paper "Teaching Computational Reproducibility for Neuroimaging" describes a UC Berkeley course (STAT 159/259, Fall 2015) in which students with no prior neuroimaging background "reproduced" published fMRI analyses using Git, Python, NumPy, SciPy, NiBabel, and scikit-learn---graded on whether the instructors could reproduce the students' results [@millman2018teaching].
-
-:::{important} Lesson 3
-Domain packages need a network and a home before they can flourish; the scikits model provided both, and the graduation of successful projects out of the scikits namespace is evidence it worked.
-:::
-
-## Deliberately Repeating the Pattern
-
-- The problem it was designed to solve: ecosystem fragmentation, duplicated governance overhead, absence of the cross-project coordination that the early SciPy workshops had provided informally.
-- SPECs (Scientific Python Ecosystem Coordination documents) as a formal version of the kind of cross-project decisions made in the 2005--2008 mailing list threads.
-- Developer summits deliberately modeled on the 2005--2008 meeting rotation: small, mixed, in-person, focused on shared roadmap decisions rather than presentations.
-- Cross-project governance: shared infrastructure, common contributor guidelines, coordinated release cycles.
-- BIDS as institutional anchor: hosting key maintainers (Perez, Ragan-Kelley, van der Walt, Millman), providing stable employment for open-source work, and making the pattern part of the university's fabric.
-  The first-ever dedicated NumPy funding grants (Moore/Sloan, 2017) were hosted through BIDS---a direct line from the informal 2005 meeting to formal institutional support.
-- Berkeley OSPO: formalizing the university's commitment so that the collaboration does not depend on individual grants or individual people.
-  An explicit answer to the academic incentive tension identified at the start: the university now has a standing commitment to open-source stewardship as an institutional function, not a personal favor.
-
-:::{important} Lesson 4
-The original "spirit" is a deliberately replicable pattern, not a historical accident; the Scientific Python project is the most explicit attempt yet to institutionalize it, and OSPO is the attempt to make the institution outlast any single grant cycle.
-:::
-
-## What the Berkeley Graph Reveals
-
-- A figure rendering the network: people as nodes, collaborations and projects as edges, institutions (BIC, Enthought, INRIA, BIDS, OSPO) as clusters.
-- Key observation: the density and reach of connections that passed through Berkeley---from BIC to BIDS to OSPO---is not obvious from any single project's history but becomes visible only when the whole graph is drawn.
-- The graph as a reproducibility argument in its own right: the resilience of the ecosystem derives partly from personal relationships forged at in-person meetings, and those relationships are themselves a kind of undocumented infrastructure.
-  Drawing the graph makes that infrastructure visible and checkable.
-- Honest caveat: many connections in the graph involve people who did important work largely independently of Berkeley; the claim is not that Berkeley was the only hub but that it was an underacknowledged one, and that underacknowledging it has made the community's own history harder to learn from.
-
-## Conclusion
-
-- Return to the dual central question and its 25-year arc: the engineering question was answered (Python is the language of scientific computing); the scientific question is still being answered (reproducibility remains contested and incomplete).
-- What the patterns suggest for future community building: the value of in-person meetings, mixed domain/tool participation, institutional homes that outlast individual grants, and deliberate mechanisms (GSoC, scikits, SPECs, summits) for activating and graduating community work.
-- The academic incentive problem is not solved: software, reproducibility infrastructure, and community building are still underrewarded in most institutions.
-  OSPO and NumFOCUS are partial answers; the community still needs better ones.
-- An invitation to the audience: what is your naïve question---and who do you need to invite to a small meeting to answer it?
+I am grateful to Matthew Brett, Stéfan van der Walt, and Kirstie Whitaker for their careful reading of the manuscript and for thoughtful comments that helped clarify the narrative and sharpen several of its central arguments.

@@ -58,7 +58,7 @@ The idea that `numeric` and `numarray` should eventually merge was there, but on
 By inviting Travis (`numeric3`) and Perry (`numarray`) to join the Berkeley meeting and to speak with Guido van Rossum (`python`) and Paul (`numeric`), we hoped to turn that aspiration into a shared plan for a unified array object and package.
 
 The first day was a hands-on laboratory, "_Scientific Python for Neuroscience Research_," taught by Fernando and John and designed to make `numeric`, `scipy`, `ipython`, `matplotlib`, and related tools immediately usable for working neuroimaging scientists.
-The next two days were split into two parallel tracks: one, focused on neuroimaging; the other, worked through whether and how a unified array object could be built that preserved the strengths of both `numeric` and `numarray`.
+The next two days were split into two parallel tracks: one, focused on neuroimaging; the other worked through whether and how a unified array object could be built that preserved the strengths of both `numeric` and `numarray`.
 Each evening we reconvened to discuss the day's work.
 
 After the meeting, two `numpy-discussion` threads communicated the outcomes and made the unification plan explicit.
@@ -71,7 +71,7 @@ That commitment culminated, eighteen months later, in the release of `numpy 1.0`
 
 While transformational in its unification of the ecosystem, `numpy 1.0` was just the beginning of what needed to be built.
 A scientific computing platform, comparable to what MATLAB or IDL provided, required far more: a vast collection of mature, performant algorithms spanning optimization, signal processing, linear algebra, statistics, differential equations, and more; a plotting system; an interactive environment; and the documentation, testing, and packaging infrastructure that makes all of it installable, trustworthy, and teachable.
-By resolving the array fragmentation that had made building on the ecosystem feel risky, it gave the community a single stable library to build on, together.
+But, importantly, resolving the array fragmentation that had made building on the ecosystem feel risky, `numpy` gave the community a single stable library to build on, together.
 
 <!--
 https://github.com/numpy/numpy/graphs/contributors?from=10%2F5%2F2006&to=3%2F13%2F2009

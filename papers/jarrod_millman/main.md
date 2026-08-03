@@ -108,9 +108,9 @@ For the first decade, `numpy` and `scipy` developers were essentially the same p
 The `scipy` toolkits, or `scikits`, began as another layer that we built on the same shared infrastructure, largely with the same hands.
 The SciPy conference was organized by that same small group as well.
 Over the decade that followed, each of these developed a community of its own, increasingly separate from the others and, eventually, separate from the people who had founded them.
-The clearest trace of that shift is almost bureaucratic: `numpy.scipy.org` became `numpy.org`; `ipython.scipy.org` became `ipython.org`; `astropy.scipy.org` became `astropy.org`; and `neuroimaging.scipy.org` became `nipy.org`.
-Each rename looks like housekeeping.
-Taken together, they add up to something larger: SciPy stopped being one thing.
+<!--
+SciPy stopped being one thing.
+-->
 <!--
 https://web.archive.org/web/20070622150504/http://new.scipy.org/
 https://web.archive.org/web/20100211214922/http://new.scipy.org/
@@ -279,7 +279,7 @@ BIDS is one attempt to make institutionally what Mark gave informally: room, tru
 But these remain exceptions rather than the norm, and they are not yet enough to catch everyone this ecosystem depended on and then let go.
 
 :::{important} It was the space to build it.
-This ecosystem lasted because some people were trusted with room to decide what mattered and time to work on it.
+This ecosystem lasted because some people were trusted to decide what mattered and given time to work on it.
 It has also lost contributors, and capacity, because that trust was never extended widely or durably enough.
 Making it durable is the work still ahead.
 :::
@@ -293,4 +293,6 @@ The same needs that pulled a handful of neuroimagers, astronomers, and statistic
 
 # Acknowledgements
 
-I am grateful to Matthew Brett, Stéfan van der Walt, and Kirstie Whitaker for their careful reading of the manuscript and for thoughtful comments that helped clarify the narrative and sharpen several of its central arguments.
+I am grateful to Matthew Brett, David Cournapeau, Perry Greenfield, Travis Oliphant, Stéfan van der Walt, and Kirstie Whitaker for their careful reading of the manuscript and for thoughtful comments that helped clarify the narrative and sharpen several of its central arguments.
+
+Portions of this work were assisted using generative AI tools. Specifically, I used perplexity.ai for research, fact-checking, refining language, restructuring the paper, copy editing, and proof-reading. All outputs were reviewed, verified, and revised by me, and I take full responsibility for the accuracy and integrity of the final content.

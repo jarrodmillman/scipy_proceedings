@@ -2,9 +2,13 @@
 # Ensure that this title is the same as the one in `myst.yml`
 title: "The Space to Build It: How Scientific Needs Shaped an Ecosystem"
 abstract: |
-  Open, community-owned scientific software does not emerge from good intentions alone; it takes real scientific needs, cross-domain collaboration, community coordination, and institutional anchors.
-  This paper traces one thread of how that combination played out: how a concrete problem in neuroimaging led to a 2005 meeting at UC Berkeley, then to a series of collaborations across astronomy, neuroscience, physics, and statistics, and eventually to the coordination structures and academic homes that now help sustain the scientific Python ecosystem.
-  It follows that journey from concerns with unreproducible pipelines and single-owner software, through the architectural decisions and invisible maintenance work that turned volunteer projects into shared infrastructure, and into the deliberate replication of those early patterns at larger scale---closing with what that history reveals about who is trusted with the room and time to build such infrastructure, and who pays for that time when their institutions will not.
+  Open, community-owned scientific software does not emerge from good intentions alone.
+  It grows from real scientific needs, cross-domain collaboration, community coordination, and people willing to bet on one another.
+  This paper traces one path through that combination, told from a single vantage point among many who could tell it differently.
+  My work in neuroimaging prompted me to co-organize a 2005 meeting at UC Berkeley that already brought together astronomers, neuroscientists, physicists, and statisticians working on problems of their own.
+  From that meeting, my collaborations grew, over the following two decades, to include people across dozens of other fields, as more and more of us trusted one another to lead work outside our own specialties---the same bet that let me help grow NumPy, SciPy, and the community and conference around them, and that still shapes the scientific Python ecosystem today.
+  The paper follows this shared path from its earliest concerns, through the architectural decisions and often invisible maintenance work that turned volunteer projects into shared infrastructure, and into the deliberate effort to recreate those early patterns at a larger scale.
+  It closes with a reflection on who is trusted with the room and time to build such infrastructure, and who pays for that time when their institutions will not.
 ---
 
 # Introduction

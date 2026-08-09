@@ -71,6 +71,10 @@ Travis' "_Future directions for SciPy in light of meeting at Berkeley_" [@olipha
 Travis committed to spending the following five to six months making `scipy_core`.
 That commitment culminated, eighteen months later, in the release of `numpy 1.0` in October 2006 [@oliphant2006numpy1.0].
 
+What happened in Berkeley reached further than the emails alone suggest.
+On the long drive to and from lunch with Guido and Paul, Travis and Perry went over numarray's internals in detail, and several of its solutions to shared problems, including a memory-efficient approach to type casting of arrays, found their way into what became `numpy`.
+The eventual library kept numeric's efficiency for small arrays, but its user interface and many higher-level features were closer to numarray than to Numeric.
+
 ## Building the foundation
 
 While transformational in its unification of the ecosystem, `numpy 1.0` was just the beginning of what needed to be built.

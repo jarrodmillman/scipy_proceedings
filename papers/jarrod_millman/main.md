@@ -1,6 +1,6 @@
 ---
 # Ensure that this title is the same as the one in `myst.yml`
-title: "The Space to Build It: How Scientific Needs Built an Ecosystem"
+title: "The Space to Build It: How Scientific Needs Shaped an Ecosystem"
 abstract: |
   Open, community-owned scientific software does not emerge from good intentions alone; it takes real scientific needs, cross-domain collaboration, community coordination, and institutional anchors.
   This paper traces one thread of how that combination played out: how a concrete problem in neuroimaging led to a 2005 meeting at UC Berkeley, then to a series of collaborations across astronomy, neuroscience, physics, and statistics, and eventually to the coordination structures and academic homes that now help sustain the scientific Python ecosystem.

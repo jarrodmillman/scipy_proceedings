@@ -26,10 +26,10 @@ It is shaped by the collaborations I was part of and the problems that were in f
 Many of the people involved in this work would tell the story differently, from their own vantage points and concerns.
 
 Each layer, once built, eventually stops working at the next scale, forcing the community to decide, consciously or not, whether and how to rebuild it.
-The three sections that follow trace that building and rebuilding in turn: how the technical foundation got built ("How to start"), how the community that depended on it grew past what that foundation alone could hold together ("How to grow"), and how institutional anchors emerged to sustain what community practice alone could not ("How to last").
+The three sections that follow trace that building and rebuilding in turn: how the technical foundation got built ("How to start"), how the community that depended on it grew past what that foundation alone could hold together ("How to grow"), and how institutional anchors began to emerge, unevenly, to sustain some of what community practice alone could not carry indefinitely ("How to last").
 A single mechanism recurs across all three: aspirations become plans, and plans become foundations, only when a small, cross-disciplinary group shares a room, more than once, rather than negotiating asynchronously from a distance.
 But describing those layers only explains how the ecosystem was built; it does not explain why researchers, scientists, and teachers who were not primarily programmers kept doing this work, often unpaid and unrecognized by the institutions that employed them.
-That deeper question is the one this paper answers last, because the answer only becomes visible once the full three decades are in view.
+That deeper question---who is trusted with the room and time to build such infrastructure, and who pays for that time when their institutions will not---is the one this paper answers last, because the answer only becomes visible once the full three decades are in view.
 
 # How to start
 
@@ -213,8 +213,8 @@ The `scipy.org` website (nominally maintained by the `scipy` library team, effec
 
 ## Ecosystem coordination
 
-In 2020, Stéfan and I co-founded the Scientific Python Project (SPP) with support from the Alfred P. Sloan Foundation [@scientificpython2020planning] to provide what the ecosystem needed, not the SciPy server's centralized infrastructure, which individual projects had rightly outgrown, but a shared layer above the individual projects: cross-project recommendations, developer summits that worked like the early sprints (small, cross-disciplinary, and work-focused), shared tooling and discussion forums, and a common landing page for the ecosystem `scientific-python.org`.
-Early community outreach by Juanita Gomez and project leadership by Brigitta Sipőcz were especially important in turning SPP from a small node into a functioning ecosystem hub.
+In 2020, Stéfan and I co-founded the _Scientific Python_ project with support from the Alfred P. Sloan Foundation [@scientificpython2020planning] to provide what the ecosystem needed, not the SciPy server's centralized infrastructure, which individual projects had rightly outgrown, but a shared layer above the individual projects: cross-project recommendations, developer summits that worked like the early sprints (small, cross-disciplinary, and work-focused), shared tooling and discussion forums, and a common landing page for the ecosystem `scientific-python.org`.
+Early community outreach by Juanita Gomez and project leadership by Brigitta Sipőcz were especially important in turning _Scientific Python_ from a small node into a functioning ecosystem hub.
 
 The 2023 Scientific Python Developer Summit illustrated what this cross-project coordination makes possible.
 Henry Schreiner had developed a comprehensive development guide for the `scikit-hep` community, high-energy physics, that covered modern packaging, testing, CI, documentation, and more; in parallel, Dan Allan at the National Synchrotron Light Source II had developed complementary guidelines for his community.
@@ -240,7 +240,8 @@ That curriculum did not stay on campus: more than fifty universities and college
 BIDS today is where that convergence is easiest to see.
 Fernando is now the Faculty Director, a decade after co-founding it; Stéfan and Min work there on the technical and infrastructure side; Kirstie, the graduate student whose career had once been redirected by conversations with Cindee, returned in 2025 as BIDS's Executive Director; and I lead Berkeley's Open Source Program Office from within it.
 Fernando has written that Berkeley's leadership in this stack "is not 'owned' by Berkeley," but built by scientists who "partner with an extended, distributed community of other researchers and developers to build an ecosystem that benefits all" [cite].
-This is the same community-ownership argument this paper opened with in 2003, now stated at the level of a university rather than a single lab.
+This is the same argument this paper opened with in 2003---that community-owned tools, built and governed by the people who need them rather than by a single lab or company, outlast anything one owner can sustain alone---now stated at the level of a university rather than a single lab.
+
 What comes next is not yet settled.
 Fernando has described BIDS as a space for open scholarship, open source, and interdisciplinary collaboration on AI in science and society [cite], and how artificial intelligence reshapes the way scientists write code, teach it, and learn it is the open problem this community will now have to work out together, in much the same way it once worked out the future of the array object in a room in Berkeley.
 

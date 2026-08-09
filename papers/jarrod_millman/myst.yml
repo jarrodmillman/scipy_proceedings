@@ -6,7 +6,14 @@ project:
   # Ensure your title is the same as in your `main.md`
   title: 'The Space to Build It: How Scientific Needs Shaped an Ecosystem'
   # subtitle:
-  description: Add a two sentence description about your article.
+  description:
+    'A personal, memoir-style account for the "Spirit of SciPy" track, tracing
+    one path through 25 years of the scientific Python ecosystem''s
+    growth---from a 2005 meeting at UC Berkeley to the coordination structures
+    and academic homes that sustain it today. Organized around how the ecosystem
+    started, how it grew, and how it has lasted, the paper closes by asking who
+    is trusted with the room and time to build such infrastructure, and who pays
+    for that time when their institutions will not.'
   # Authors should have affiliations, emails and ORCIDs if available
   authors:
     - name: K. Jarrod Millman
@@ -29,11 +36,17 @@ project:
     - rule: doi-exists
       severity: ignore
       keys:
-        - Atr03
-        - terradesert
-        - jupyter
-        - sklearn1
-        - sklearn2
+        - oliphant2004status
+        - oliphant2004comments
+        - oliphant2005updating
+        - oliphant2005numeric3
+        - perry2005guido
+        - oliphant2005berkeley
+        - oliphant2006numpy1.0
+        - oliphant2007sprint
+        - millman2009scipy070
+        - scipy070notes
+        - scientificpython2020planning
   exports:
     - id: pdf
       format: typst

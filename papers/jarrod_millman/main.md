@@ -299,4 +299,4 @@ The same needs that pulled a handful of neuroimagers, astronomers, and statistic
 
 I am grateful to Matthew Brett, David Cournapeau, Perry Greenfield, Travis Oliphant, Stéfan van der Walt, and Kirstie Whitaker for their careful reading of the manuscript and for thoughtful comments that helped clarify the narrative and sharpen several of its central arguments.
 
-Portions of this work were assisted using generative AI tools. Specifically, I used perplexity.ai for research, fact-checking, refining language, restructuring the paper, copy editing, and proof-reading. All outputs were reviewed, verified, and revised by me, and I take full responsibility for the accuracy and integrity of the final content.
+Portions of this work were assisted using generative AI tools. Specifically, I used Perplexity AI for research, fact-checking, refining language, restructuring the paper, copy editing, and proof-reading. All outputs were reviewed, verified, and revised by me, and I take full responsibility for the accuracy and integrity of the final content.

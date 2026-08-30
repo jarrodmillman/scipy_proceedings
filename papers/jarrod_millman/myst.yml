@@ -47,6 +47,11 @@ project:
         - millman2009scipy070
         - scipy070notes
         - scientificpython2020planning
+        - schreiner2023scientificpythondevguide
+        - scientificpythonDevelopmentGuide
+        - ucberkeley2025datamajor
+        - cloudbankEducators
+        - perez2024bidsvision
   exports:
     - id: pdf
       format: typst
